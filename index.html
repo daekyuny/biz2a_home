@@ -1,12 +1,211 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Portfolio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biz2A - Business to All | IT 경영 컨설팅</title>
+    <meta name="description" content="IT 기업을 위한 전문 경영 컨설팅 서비스">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+    <link rel="shortcut icon" href="images/favicon.png">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <p>Welcome to biz2a!</p>
+    <!-- 헤더 -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <img src="images/logo.png" alt="Biz2A Logo" class="logo">
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home">홈</a></li>
+                    <li><a href="#about">소개</a></li>
+                    <li><a href="#services">서비스</a></li>
+                    <li><a href="#ceo">대표소개</a></li>
+                    <li><a href="#contact">문의하기</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 히어로 섹션 -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Business to All</h1>
+                <p class="hero-subtitle">IT 기업의 성공을 함께 하는 전문 경영 컨설팅</p>
+                <a href="#contact" class="btn btn-primary">컨설팅 문의하기</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 소개 섹션 -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">Biz2A 소개</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Business to All, 모든 비즈니스의 성공을 위한 파트너</h3>
+                    <p>Biz2A는 국내외 모든 IT 기업의 성공적인 비즈니스 성장을 위한 전문 경영 컨설팅 파트너입니다</p>
+                    <p>대기업 임원 경험과 스타트업 창업 경험, 그리고 학계에서의 깊은 통찰력을 바탕으로 고객사의 성공적인 비즈니스 전략을 설계하고 실행합니다.</p>
+                    <div class="about-features">
+                        <div class="feature">
+                            <h4>전문성</h4>
+                            <p>삼성전자, 네이버 등 대기업에서의 풍부한 경험</p>
+                        </div>
+                        <div class="feature">
+                            <h4>글로벌 네트워크</h4>
+                            <p>국내외 광범위한 비즈니스 네트워크</p>
+                        </div>
+                        <div class="feature">
+                            <h4>실행력</h4>
+                            <p>전략 수립부터 실행까지 End-to-End 지원</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 서비스 섹션 -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">주요 서비스</h2>
+            <div class="service-grid">
+                <div class="service-card">
+                    <div class="service-icon">📊</div>
+                    <h3>전략 컨설팅</h3>
+                    <p>중장기 기술 및 판매 전략 수립</p>
+                    <ul>
+                        <li>시장 진입 전략</li>
+                        <li>제품/서비스 로드맵</li>
+                        <li>경쟁 분석 및 포지셔닝</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🤝</div>
+                    <h3>비즈니스 개발</h3>
+                    <p>고객 발굴 및 C-레벨 커뮤니케이션</p>
+                    <ul>
+                        <li>주요 고객사 발굴</li>
+                        <li>임원진 미팅 주선</li>
+                        <li>파트너십 구축 지원</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📢</div>
+                    <h3>마케팅 지원</h3>
+                    <p>기고 및 강연을 통한 홍보 지원</p>
+                    <ul>
+                        <li>미디어 기고 및 인터뷰</li>
+                        <li>컨퍼런스 강연</li>
+                        <li>세미나 기획 및 진행</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 대표 컨설턴트 소개 섹션 -->
+    <section id="ceo" class="ceo">
+        <div class="container">
+            <h2 class="section-title">대표 컨설턴트 소개</h2>
+            <div class="ceo-content">
+                <div class="ceo-info">
+                    <h3>윤대균</h3>
+                    <p class="ceo-title">Biz2A 대표 | 아주대학교 소프트웨어학과 교수</p>
+                    <div class="ceo-bio">
+                        <p>서울대학교 컴퓨터 공학과에서 학사/석사, 미국 USC에서 컴퓨터공학 박사학위를 취득하고, 벤처기업 창업, 삼성전자 전무, 네이버 경영진 및 계열사 대표이사 등을 역임한 IT 업계의 베테랑입니다.</p>
+                        <p>글로벌 기업에서의 사업 총괄 경험과 스타트업 창업 경험을 바탕으로, 기업의 성장 단계별 맞춤형 컨설팅을 제공합니다.</p>
+                    </div>
+                    <div class="ceo-highlights">
+                        <h4>주요 경력</h4>
+                        <ul>
+                            <li>현) ㈜넷마블 사외이사</li>
+                            <li>현) 아주대학교 소프트웨어산학협력 센터장, 소프트웨어학과 교수</li>
+                            <li>삼성전자 무선사업부 전무 (서비스 전략, Galaxy Apps, 타이젠 에코시스템 총괄)</li>
+                            <li>NHN Technology Services (현 N Tech Service) 대표이사</li>
+                            <li>NHN 비즈니스 플랫폼 (현 네이버 클라우드 플랫폼) 전략사업 본부장, 이사회 멤버</li>
+                            <li>NHN (현 네이버) 전략지원 본부장, 컨버전스 센터장</li>
+                            <li>㈜네오스텝스 창업 대표이사</li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 문의하기 섹션 -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">문의하기</h2>
+
+                <div class="contact-form">
+                    <form id="contactForm" action="https://formspree.io/f/xjkrrbwk" method="POST">
+                        <div class="form-group">
+                            <label for="name">이름 *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">소속 *</label>
+                            <input type="text" id="company" name="company" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">이메일 *</label>
+                            <input type="email" id="email" name="_replyto" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">문의 내용 *</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <div class="privacy-agreement">
+                            <h4>개인정보 수집 및 이용에 대한 동의</h4>
+                            <div class="privacy-content">
+                                <p><strong>수집하는 개인정보 항목:</strong> 이름, 이메일, 소속, 문의 내용</p>
+                                <p><strong>개인정보 수집 및 이용 목적:</strong> 문의 응대 및 서비스 제공</p>
+                                <p><strong>개인정보 보유 및 이용 기간:</strong> 문의 처리 완료 후 1년</p>
+                                <p class="privacy-notice">※ 동의하지 않으실 경우 문의가 불가능합니다.</p>
+                            </div>
+                            <div class="form-privacy-checkbox">
+                                <input type="checkbox" id="privacy-consent" name="privacy-consent" required>
+                                <label for="privacy-consent">개인정보 수집 및 이용에 동의합니다.</label>
+                            </div>
+                        </div>
+                        <input type="hidden" name="_subject" id="email-subject" value="[biz2a 문의] 새로운 문의">
+                        <input type="hidden" name="subject" id="email-subject-alt" value="[biz2a 문의] 새로운 문의">
+                        <input type="text" name="_gotcha" style="display:none">
+                        <button type="submit" class="btn btn-primary">문의 보내기</button>
+                        <div id="form-message" class="form-message"></div>
+                    </form>
+                </div>
+
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Biz2A. All rights reserved.</p>
+                <p>Business to All - IT 경영 컨설팅</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
 </body>
 </html>
