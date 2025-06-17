@@ -3,6 +3,13 @@ const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
 hamburger.addEventListener('click', () => {
+    if (hamburger.classList.contains('active')) {
+        hamburger.innerHTML = '<span></span><span></span><span></span>';
+    } else {
+        hamburger.innerHTML = '×';
+        hamburger.style.fontSize = '24px';
+        hamburger.style.color = 'var(--text-dark)';
+    }
     hamburger.classList.toggle('active');
     navMenu.classList.toggle('active');
 });

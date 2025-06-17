@@ -88,7 +88,7 @@ header {
 .hero {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: var(--white);
-    padding: 120px 0 80px;
+    padding: 120px 0 60px;
     text-align: center;
 }
 
@@ -106,7 +106,7 @@ header {
 
 .btn {
     display: inline-block;
-    padding: 12px 30px;
+    padding: 6px 15px;
     border-radius: 5px;
     text-decoration: none;
     font-weight: 500;
@@ -223,10 +223,13 @@ section {
 .service-card ul li {
     padding: 0.5rem 0;
     color: var(--text-light);
+    text-indent: -1.2rem;
+    padding-left: 1.2rem;
+
 }
 
 .service-card ul li:before {
-    content: "✓ ";
+    content: "✓";
     color: var(--secondary-color);
     font-weight: bold;
     margin-right: 0.5rem;
@@ -248,10 +251,33 @@ section {
     color: var(--primary-color);
 }
 
+.ceo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.ceo-text {
+    flex: 1;
+}
+
 .ceo-title {
     font-size: 1.1rem;
     color: var(--text-light);
     margin-bottom: 1.5rem;
+}
+
+.ceo-photo {
+    margin-left: 2rem;
+}
+
+.ceo-image {
+    width: 90px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .ceo-bio p {
@@ -280,10 +306,12 @@ section {
 .ceo-highlights ul li {
     padding: 0.5rem 0;
     color: var(--text-light);
+    text-indent: -1.35rem;
+    padding-left: 1.35rem;
 }
 
 .ceo-highlights ul li:before {
-    content: "▸ ";
+    content: "▸";
     color: var(--secondary-color);
     font-weight: bold;
     margin-right: 0.5rem;
@@ -429,19 +457,21 @@ section {
 @media (max-width: 768px) {
     .nav-menu {
         position: fixed;
-        left: -100%;
-        top: 70px;
+        right: -150px;
+        top: 60px;
         flex-direction: column;
         background: var(--white);
-        width: 100%;
+        width: 150px;
         text-align: center;
         transition: 0.3s;
-        box-shadow: 0 10px 27px rgba(0,0,0,0.05);
+        box-shadow: 0 10px 27px rgba(0,0,0,0.15);
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
         padding: 2rem 0;
     }
 
     .nav-menu.active {
-        left: 0;
+        right: 0;
     }
 
     .hamburger {
@@ -461,7 +491,7 @@ section {
     }
 
     .hero {
-        padding: 80px 0 50px;
+        padding: 100px 0 40px;
     }
 
     .hero h1 {
@@ -470,6 +500,22 @@ section {
 
     .hero-subtitle {
         font-size: 1.1rem;
+    }
+
+    .ceo-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .ceo-photo {
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+    
+    .ceo-image {
+        width: 75px;
+        height: 100px;
     }
 
     .contact-content {
