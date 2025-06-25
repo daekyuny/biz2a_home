@@ -1,128 +1,87 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-<title>Best of Golf Jokes</title>
-<meta name="generator" content="Namo WebEditor v3.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best of Golf Jokes</title>
+    <meta name="description" content="Best collection of golf jokes compiled by Daekyun Yoon">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+    <link rel="shortcut icon" href="images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
+<body>
+    <div class="container">
+        <header class="magazine-header">
+            <h1 class="magazine-title">Best of Golf Jokes</h1>
+            <p class="magazine-subtitle">A curated collection of golf humor</p>
+            <div class="author-info">
+                Compiled by Daekyun Yoon
+            </div>
+        </header>
 
-<body bgcolor="#FFFDEF" text="black" link="blue" vlink="purple" alink="red">
+        <article class="forward-article">
+            <h3 class="article-title">📖 Forward</h3>
+            <p>None of the jokes presented here are the original work of mine. These jokes have been floating around on the net for a few years, and I just compiled them and put some titles when needed. Please note that many of them might be offensive for various reasons, such as using <em>explicit language</em>, casting some religious characters and so on.</p>
+            <p>In building this page, most of the credits should be given to all the people who love the game of golf and particularly those who actively participate in "rec.sports.golf" news group. Your feedback and comments are always welcome, and they are indeed the most important factor to keep this page as one of the enjoyable golfers' web pages.</p>
+            
+            <div class="contact-section">
+                <p>📧 Send any feedback or new jokes to <a href="mailto:dkyoon@gmail.com">dkyoon@gmail.com</a></p>
+                <p><strong>Daekyun Yoon</strong> - Casual weekend golfer</p>
+            </div>
+        </article>
 
+        <section class="toc-section">
+            <h2 class="toc-title">Table of Contents</h2>
+            
+            <!-- Page Info -->
+            <div class="page-info">
+                <span id="currentPageInfo">Page 1 of 5</span>
+                <span class="joke-count">Showing <span id="jokeRange">1-15</span> of 65 jokes</span>
+            </div>
+            
+            <!-- Jokes List -->
+            <div class="jokes-magazine-list" id="jokesList">
+                <!-- Jokes will be populated by JavaScript -->
+            </div>
+            
+            <!-- Pagination Controls -->
+            <div class="pagination-controls">
+                <button class="pagination-btn" id="prevBtn" onclick="changePage(-1)">
+                    <span class="btn-icon">‹</span>
+                    Previous
+                </button>
+                
+                <div class="page-numbers" id="pageNumbers">
+                    <!-- Page numbers will be populated by JavaScript -->
+                </div>
+                
+                <button class="pagination-btn" id="nextBtn" onclick="changePage(1)">
+                    Next
+                    <span class="btn-icon">›</span>
+                </button>
+            </div>
+        </section>
 
-<p><!-d by tex2x> <hr size="4"> <p></p>
-<a name="TOC">
-<h1 align="center">Best of Golf Jokes</h1>
-<h3 align="center">Compiled By</h3>
-<h2 align="center">Daekyun Yoon</h2>
-<p><hr size="4"> <p></p>
-<p><b>Forward</b></p>
-<p>None of the jokes presented here are the original work of mine. These jokes 
-have been floating around on the net for a few years, and I just compiled them 
-and put some titles when needed. Please note that many of them might be offensive 
-for various reasons, such as using <em>explicit language</em>, casting some 
-religious characters and so on. It is therefore advised that you should not 
-proceed to read these jokes if you think there is any possibility of being offended.</p>
-<p>In building this page, most of the credits should be given to all the people 
-who love the game of golf and particularly those who actively participate in 
-``rec.sports.golf'' news group. Your feedback and/or comments and/or any interesting 
-articles are always welcome, and they are indeed the most important factor to 
-keep this page as one of the enjoyable golfers' WEB pages. Enjoy them and send 
-any feedback/new jokes to <a href="mailto:dkyoon@gmail.com">dkyoon@gmail.com</a>. </p>
-<p>Daekyun Yoon (Casual weekend golfer)</p>
+        <footer class="stats-footer">
+            <span class="golf-icon">⛳</span>
+            Total: 65 carefully selected golf jokes
+            <span class="golf-icon">🏌️</span>
+        </footer>
+    </div>
 
-<p><hr size="4"> <p></p>
-
-<h2 align="center"><a name="Golf Joke TOC">Table of Contents</a></h2>
-
-<table border=0, align="center">
-<tr>
-<td>
-<ul type="disc">
-    <li><a href="gj0001.html#a000002">Can you stop this golfer ?</a> 
-    <li><a href="gj0002.html#a000003">Difference between a golf course and a 
-    whorehouse</a> 
-    <li><a href="gj0003.html#a000004">A Golfer's nightmare</a> 
-    <li><a href="gj0004.html#a000005">Handicap</a> 
-    <li><a href="gj0005.html#a000006">Like golfer like caddy</a> 
-    <li><a href="gj0006.html#a000007">Fairy tale (1)</a> 
-    <li><a href="gj0007.html#a000008">Fairy tale (2)</a> 
-    <li><a href="gj0008.html#a000009">Jesus!, What a golfer! (1)</a> 
-    <li><a href="gj0009.html#a000010">Doctor's Problem</a> 
-    <li><a href="gj0010.html#a000011">The rules of bedroom golf</a> 
-    <li><a href="gj0011.html#a000012">Heavenly golf (1)</a> 
-    <li><a href="gj0012.html#a000013">The fate of a golfer's wife</a> 
-    <li><a href="gj0013.html#a000014">You can't keep your head down!</a> 
-    <li><a href="gj0014.html#a000015">`F' word (1)</a> 
-    <li><a href="gj0015.html#a000016">Golf Lesson 101 (1)</a> 
-    <li><a href="gj0016.html#a000017">Switch Golfer</a> 
-    <li><a href="gj0017.html#a000018">At a fancy resort hotel...</a> 
-    <li><a href="gj0018.html#a000019">Not a bad deal, at all!!</a> 
-    <li><a href="gj0019.html#a000020">Amazing Golf Ball</a> 
-    <li><a href="gj0020.html#a000021">Confession before marriage</a> 
-    <li><a href="gj0021.html#a000022">If I become a lesbian...</a> 
-    <li><a href="gj0022.html#a000023">Heavenly Golf (2)</a> 
-    <li><a href="gj0023.html#a000024">Jesus!, What a golfer! (2)</a> 
-    <li><a href="gj0024.html#a000025">Great Trade ?</a> 
-    <li><a href="gj0025.html#a000026">`F' Word (2)</a> 
-    <li><a href="gj0026.html#a000027">`F' Word (3)</a> 
-    <li><a href="gj0027.html#a000028">How does he putt ?</a> 
-    <li><a href="gj0028.html#a000029">Preacher's Call</a> 
-    <li><a href="gj0029.html#a000030">The most cruel punishment</a> 
-    <li><a href="gj0030.html#a000031">How to play in winder ?</a> 
-    <li><a href="gj0031.html#a000032">An Illusion</a> 
-    <li><a href="gj0032.html#a000033">Gamma Su !! Gamma Su !!</a> 
-    <li><a href="gj0033.html#a000034">Heavenly Golf (3)</a> 
-    <li><a href="gj0034.html#a000035">A real disastrous shot</a> 
-    <li><a href="gj0035.html#a000036">What a club pro !</a> 
-    <li><a href="gj0036.html#a000037">Honeymoon Golf</a> 
-    <li><a href="gj0037.html#a000038">How to make a decent shot on a cart path 
-    ?</a> 
-    <li><a href="gj0038.html#a000039">No Excuse !!</a> 
-    <li><a href="gj0039.html#a000040">How to beat PGA Pros</a> 
-    <li><a href="gj0040.html#a000041">Green Golf Balls</a> 
-    <li><a href="gj0041.html#a000042">Difference between a bad golfer and a 
-    bad skydiver?</a> 
-    <li><a href="gj0042.html#a000043">The game of golf and the marriage</a> 
-    
-    <li><a href="gj0043.html#a000044">Some Quotes from Golf Digest Magazine</a> 
-    
-    <li><a href="gj0044.html#a000045">Golf Lesson 101 (2)</a> 
-    <li><a href="gj0045.html#a000046">Oh! That is just a wrong place for a golf 
-    ball.</a> 
-    <li><a href="gj0046.html#a000047">It's a small world</a> 
-    <li><a href="gj0047.html#a000048">Golfing on Mother's Day</a> 
-    <li><a href="gj0048.html#a000049">In a Lamaze class</a> 
-    <li><a href="gj0049.html#a000050">Wrong Excuse</a> 
-    <li><a href="gj0050.html#a000051">The Dream Golf Course</a> 
-    <li><a href="gj0051.html#a000052">The magic of bifocal glasses</a> 
-    <li><a href="gj0052.html#a000053">Fatal Provisional</a> 
-    <li><a href="gj0053.html#a000054">Pavin Fined ?</a> 
-    <li><a href="gj0054.html#a000055">How do pros create so much backspin ?</a> 
-    
-    <li><a href="gj0055.html#a000056">Why not use old balls ?</a> 
-    <li><a href="gj0056.html#a000057">Golf Lesson 101 (3)</a> 
-    <li><a href="gj0057.html#a000058">How Harrington killed his wife ?</a> 
-    <li><a href="gj0058.html#a000059">How hard to hit a 1-iron ?</a> 
-    <li><a href="gj0059.html#a000060">Golf Lesson 101 (4)</a> 
-    <li><a href="gj0060.html#a000061">Need a spotter ?</a> 
-    <li><a href="gj0061.html#a000062">Feeling good or healing hurts ?</a> 
-    <li><a href="gj0062.html#a000063">Golfer's Regret ?</a> 
-    <li><a href="gj0063.html#a000064">Any more golf jokes ?</a> 
-    <li><a href="gj0064.html#a000065">Some quotes</a> 
-    <li><a href="gj0065.html#a000066">A true joke ?</a> 
-</ul>
-</td>
-</tr>
-</table>
-<p>
-<P align="center"><a href="#TOC"><img src="images/house17.gif" width="30"
- height="30" border="0" alt="house17.gif"></p>
-<p align="center">&nbsp;</p>
-<script type="text/javascript" src="http://static.analytics.openapi.naver.com/js/wcslog.js"></script>
-<script type="text/javascript">
-           if(!wcs_add) var wcs_add = {};
-           wcs_add["wa"] = "5685fd50014b";
-           wcs_do();
-</script>
+    <!-- Scripts -->
+    <script type="text/javascript" src="https://static.analytics.openapi.naver.com/js/wcslog.js"></script>
+    <script src="js/script.js"></script>
 </body>
-
 </html>
