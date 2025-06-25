@@ -578,6 +578,26 @@ body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
+/* 골프 유머 페이지 전용 스타일 */
+.logo-section {
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.header-logo {
+    height: 30px;
+    width: auto;
+    transition: var(--transition);
+}
+
+.header-logo:hover {
+    opacity: 0.8;
+}
+
+.magazine-header .logo-section {
+    margin-bottom: 1.5rem;
+}
+
 /* =================================
    RESPONSIVE DESIGN
    ================================= */

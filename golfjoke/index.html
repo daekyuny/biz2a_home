@@ -1,28 +1,36 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Best of Golf Jokes</title>
     <meta name="description" content="Best collection of golf jokes compiled by Daekyun Yoon">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
     <link rel="apple-touch-icon" href="images/favicon.png">
     <link rel="shortcut icon" href="images/favicon.png">
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
     <!-- Styles -->
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <div class="container">
         <header class="magazine-header">
+            <div class="logo-section">
+                <a href="../index.html">
+                    <img src="../images/logo.png" alt="Biz2A Logo" class="header-logo">
+                </a>
+            </div>
             <h1 class="magazine-title">Best of Golf Jokes</h1>
             <p class="magazine-subtitle">A curated collection of golf humor</p>
             <div class="author-info">
@@ -32,9 +40,15 @@
 
         <article class="forward-article">
             <h3 class="article-title">📖 Forward</h3>
-            <p>None of the jokes presented here are the original work of mine. These jokes have been floating around on the net for a few years, and I just compiled them and put some titles when needed. Please note that many of them might be offensive for various reasons, such as using <em>explicit language</em>, casting some religious characters and so on.</p>
-            <p>In building this page, most of the credits should be given to all the people who love the game of golf and particularly those who actively participate in "rec.sports.golf" news group. Your feedback and comments are always welcome, and they are indeed the most important factor to keep this page as one of the enjoyable golfers' web pages.</p>
-            
+            <p>None of the jokes presented here are the original work of mine. These jokes have been floating around on
+                the net for a few years, and I just compiled them and put some titles when needed. Please note that many
+                of them might be offensive for various reasons, such as using <em>explicit language</em>, casting some
+                religious characters and so on.</p>
+            <p>In building this page, most of the credits should be given to all the people who love the game of golf
+                and particularly those who actively participate in "rec.sports.golf" news group. Your feedback and
+                comments are always welcome, and they are indeed the most important factor to keep this page as one of
+                the enjoyable golfers' web pages.</p>
+
             <div class="contact-section">
                 <p>📧 Send any feedback or new jokes to <a href="mailto:dkyoon@gmail.com">dkyoon@gmail.com</a></p>
                 <p><strong>Daekyun Yoon</strong> - Casual weekend golfer</p>
@@ -43,29 +57,29 @@
 
         <section class="toc-section">
             <h2 class="toc-title">Table of Contents</h2>
-            
+
             <!-- Page Info -->
             <div class="page-info">
                 <span id="currentPageInfo">Page 1 of 5</span>
                 <span class="joke-count">Showing <span id="jokeRange">1-15</span> of 65 jokes</span>
             </div>
-            
+
             <!-- Jokes List -->
             <div class="jokes-magazine-list" id="jokesList">
                 <!-- Jokes will be populated by JavaScript -->
             </div>
-            
+
             <!-- Pagination Controls -->
             <div class="pagination-controls">
                 <button class="pagination-btn" id="prevBtn" onclick="changePage(-1)">
                     <span class="btn-icon">‹</span>
                     Previous
                 </button>
-                
+
                 <div class="page-numbers" id="pageNumbers">
                     <!-- Page numbers will be populated by JavaScript -->
                 </div>
-                
+
                 <button class="pagination-btn" id="nextBtn" onclick="changePage(1)">
                     Next
                     <span class="btn-icon">›</span>
@@ -84,4 +98,5 @@
     <script type="text/javascript" src="https://static.analytics.openapi.naver.com/js/wcslog.js"></script>
     <script src="js/script.js"></script>
 </body>
+
 </html>
