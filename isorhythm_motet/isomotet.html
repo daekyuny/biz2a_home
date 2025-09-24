@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Isorhythmic Motet Player / 아이소리듬 모테트 연주기</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #111827;
+        --panel: #1f2937;
+        --border: #374151;
+        --fg: #f9fafb;
+        --fg-muted: #9ca3af;
+        --accent: #38bdf8;
+        --accent-hover: #7dd3fc;
+        --danger: #f43f5e;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", "Noto Sans KR", system-ui, -apple-system, Segoe UI,
+          Roboto, sans-serif;
+        margin: 0;
+        padding: 24px;
+        background: var(--bg);
+        color: var(--fg);
+        font-size: 14px;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        display: grid;
+        gap: 16px;
+      }
+      header {
+        text-align: center;
+        margin-bottom: 16px;
+      }
+      h1 {
+        font-size: 28px;
+        margin: 0 0 4px;
+        color: var(--fg);
+        font-weight: 700;
+      }
+      h2 {
+        font-size: 18px;
+        margin: 0 0 16px;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 10px;
+        font-weight: 500;
+        color: var(--accent);
+      }
+      .small {
+        font-size: 12px;
+        color: var(--fg-muted);
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+      }
+      .row {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .row:last-child {
+        margin-bottom: 0;
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        flex: 1 1 300px;
+      }
+      label,
+      .field > .small {
+        font-weight: 500;
+        color: var(--fg-muted);
+        font-size: 13px;
+      }
+      input[type="text"],
+      input[type="number"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 14px;
+        background: #374151;
+        color: var(--fg);
+        transition: border-color 0.2s, box-shadow 0.2s;
+        font-family: "Inter", "Noto Sans KR", sans-serif;
+      }
+      textarea {
+        min-height: 80px;
+        resize: vertical;
+      }
+      input[type="text"]:focus,
+      input[type="number"]:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.3);
+      }
+      button {
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: #374151;
+        color: var(--fg);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: background-color 0.2s, color 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "Inter", "Noto Sans KR", sans-serif;
+      }
+      button:hover {
+        background: #4b5563;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      button.primary {
+        background-color: var(--accent);
+        color: var(--bg);
+        border-color: var(--accent);
+      }
+      button.primary:hover {
+        background-color: var(--accent-hover);
+      }
+      button.danger {
+        background-color: transparent;
+        border-color: var(--danger);
+        color: var(--danger);
+      }
+      button.danger:hover {
+        background-color: var(--danger);
+        color: var(--fg);
+      }
+      .controls-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+        align-items: end;
+      }
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 6px;
+        background: #4b5563;
+        border-radius: 3px;
+        outline: none;
+        margin-top: 4px;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        background: var(--accent);
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      input[type="range"]::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        background: var(--accent);
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: var(--fg-muted);
+        cursor: pointer;
+      }
+      #scoreWrap {
+        display: none;
+        border: 1px dashed var(--border);
+        padding: 16px;
+        border-radius: 12px;
+        background: var(--bg);
+        margin-top: 16px;
+        transition: opacity 0.5s ease;
+        opacity: 0;
+      }
+      #scoreWrap.visible {
+        display: block;
+        opacity: 1;
+      }
+      #score svg {
+        background-color: var(--panel);
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Isorhythmic Motet Player / 아이소리듬 모테트 연주기</h1>
+      </header>
+
+      <div class="card">
+        <h2>1. 재료 입력 / Composition Materials</h2>
+        <div class="row">
+          <div class="field">
+            <label for="talea">Talea (리듬) - 한 줄에 한 패턴씩 입력</label>
+            <textarea id="talea" placeholder="예: 8,8,4,4,R2,16">8,8,4,4,2,16</textarea>
+          </div>
+          <div class="field">
+            <label for="color">Color (선율) - 한 줄에 한 패턴씩 입력</label>
+            <textarea id="color" placeholder="예: C4,D4,F4,E4,G4,A4">C4,D4,F4,E4,G4,F4,E4,D4</textarea>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="field" style="flex-grow: 0.5">
+            <label for="mode">모드 도우미 / Mode Helper</label>
+            <select id="mode">
+              <option value="dorian_D">D Dorian (도리안)</option>
+              <option value="phrygian_E">E Phrygian (프리지안)</option>
+              <option value="mixolydian_G">G Mixolydian (믹솔리디안)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="scaleDegrees">음계 단계 / Scale Degrees</label>
+            <input
+              id="scaleDegrees"
+              type="text"
+              value="1,2,4,3,5,4,3,2"
+              placeholder="예: 1,2,3,4,5"
+            />
+          </div>
+          <button id="applyMode" style="align-self: flex-end">
+            Color 생성 (목록에 추가)
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>2. 상성부 옵션 / Contrapuntal Options (Motetus)</h2>
+        <div class="row">
+          <div class="field">
+            <label for="motShift">시차 / Time Shift (delay in tokens)</label>
+            <select id="motShift">
+              <option value="0" selected>0 토큰</option>
+              <option value="1">1 토큰</option>
+              <option value="2">2 토큰</option>
+              <option value="3">3 토큰</option>
+              <option value="4">4 토큰</option>
+              <option value="5">5 토큰</option>
+              <option value="6">6 토큰</option>
+              <option value="7">7 토큰</option>
+              <option value="8">8 토큰</option>
+              <option value="9">9 토큰</option>
+              <option value="10">10 토큰</option>
+              <option value="11">11 토큰</option>
+              <option value="12">12 토큰</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="motInt">음 간격 / Interval (above Tenor)</label>
+            <select id="motInt">
+              <option value="3" selected>장3도 / Major 3rd</option>
+              <option value="6">장6도 / Major 6th</option>
+              <option value="5">완전5도 / Perfect 5th</option>
+              <option value="8">옥타브 / Octave</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <label class="checkbox-label"
+            ><input type="checkbox" id="avoidParallels" checked /> 평행 완전음정
+            회피 / Avoid Parallel Perfect Intervals</label
+          >
+          <label class="checkbox-label"
+            ><input type="checkbox" id="cadence" checked /> 마지막 종지 신호 /
+            Signal final cadence</label
+          >
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>3. 재생 및 내보내기 / Playback & Export</h2>
+        <div class="controls-grid">
+          <div class="control-group">
+            <label for="tempo"
+              >템포 / Tempo (<span id="tempoVal">78</span> BPM)</label
+            >
+            <input type="range" id="tempo" min="40" max="140" value="78" />
+          </div>
+          <div class="control-group">
+            <label for="vol"
+              >음량 / Volume (<span id="volVal">80</span>%)</label
+            >
+            <input type="range" id="vol" min="0" max="100" value="80" />
+          </div>
+          <div class="control-group">
+            <label for="cycles">반복 / Repetitions</label>
+            <input id="cycles" type="number" min="1" max="12" value="3" />
+          </div>
+        </div>
+        
+        <div class="row" style="margin-top: 20px;">
+            <div class="field">
+                <label for="taleaSelector">Talea 선택</label>
+                <select id="taleaSelector"></select>
+            </div>
+            <div class="field">
+                <label for="colorSelector">Color 선택</label>
+                <select id="colorSelector"></select>
+            </div>
+        </div>
+        <div
+          class="row"
+          style="justify-content: space-between"
+        >
+          <div>
+            <button id="play" class="primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+              재생
+            </button>
+            <button id="stop" class="danger">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h12v12H6z"></path></svg>
+              정지
+            </button>
+          </div>
+          <div>
+            <button id="renderScore">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              악보 미리보기
+            </button>
+            <button id="downloadSVG" disabled>SVG 다운로드</button>
+            <button id="downloadMXML" disabled>MusicXML 다운로드</button>
+          </div>
+        </div>
+        <div id="scoreWrap">
+          <div class="small" style="margin-bottom: 12px">
+            고음부(모테투스)와 저음부(테노르)를 사각형으로 단순 표기합니다. 정식
+            악보는 MusicXML 파일로 받으세요.
+          </div>
+          <div id="score"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ======== State Management ========
+      let ctx = null,
+        master = null,
+        playing = false;
+
+      // ======== Pitch & Parse ========
+      const A4 = 440;
+      const SEMI = { C: -9, "C#": -8, Db: -8, D: -7, "D#": -6, Eb: -6, E: -5, F: -4, "F#": -3, Gb: -3, G: -2, "G#": -1, Ab: -1, A: 0, "A#": 1, Bb: 1, B: 2 };
+
+      function getPatterns(elementId) {
+          return document.getElementById(elementId).value.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+      }
+      function noteToFreq(note) {
+        const m = (note || "").trim().match(/^([A-G][b#]?)(\d+)?$/);
+        if (!m) return null;
+        const name = m[1], oct = m[2] ? parseInt(m[2], 10) : 4;
+        const semis = (oct - 4) * 12 + (SEMI[name] ?? 0);
+        return A4 * Math.pow(2, semis / 12);
+      }
+      function parseCSV(s) {
+        return s.split(",").map((x) => x.trim()).filter((x) => x.length > 0);
+      }
+      function parseTalea(raw) {
+        const toks = parseCSV(raw);
+        const out = [];
+        for (const tk of toks) {
+          const m = tk.match(/^R?(\d{1,2})$/i);
+          if (!m) continue;
+          const val = parseInt(m[1], 10);
+          if (![16, 8, 4, 2].includes(val)) continue;
+          const q = 4 / val;
+          const rest = /^R/i.test(tk);
+          out.push({ q, rest });
+        }
+        return out;
+      }
+      const MODES = {
+        dorian_D: { tonic: "D", steps: [0, 2, 3, 5, 7, 9, 10] },
+        phrygian_E: { tonic: "E", steps: [0, 1, 3, 5, 7, 8, 10] },
+        mixolydian_G: { tonic: "G", steps: [0, 2, 4, 5, 7, 9, 10] },
+      };
+      function buildColorFromMode(key, degrees, baseOct = 4) {
+        const cfg = MODES[key];
+        if (!cfg) return null;
+        const degs = parseCSV(degrees).map((x) => parseInt(x, 10)).filter((n) => !isNaN(n));
+        const nameToSemis = { C: 0, "C#": 1, Db: 1, D: 2, "D#": 3, Eb: 3, E: 4, F: 5, "F#": 6, Gb: 6, G: 7, "G#": 8, Ab: 8, A: 9, "A#": 10, Bb: 10, B: 11};
+        const tonic = nameToSemis[cfg.tonic] ?? 0;
+        const names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+        const out = [];
+        for (const d of degs) {
+          const step = cfg.steps[(d - 1) % 7];
+          const abs = tonic + step + baseOct * 12;
+          const n = names[((abs % 12) + 12) % 12];
+          const o = Math.floor(abs / 12);
+          out.push(n + o);
+        }
+        return out.join(",");
+      }
+
+      // ======== Synthesis ========
+      function ensureCtx() {
+        if (!ctx || ctx.state === 'closed') {
+          ctx = new (window.AudioContext || window.webkitAudioContext)();
+          master = ctx.createGain();
+          master.connect(ctx.destination);
+        }
+      }
+      function stopAudio() {
+        if (ctx) {
+          ctx.close().finally(() => {
+              ctx = null;
+              master = null;
+              playing = false;
+              document.getElementById("play").disabled = false;
+          });
+        } else {
+            playing = false;
+        }
+      }
+      function env(g, t, d, peak = 0.9) {
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.linearRampToValueAtTime(peak, t + Math.min(0.02, d * 0.15));
+        g.gain.linearRampToValueAtTime(0.0001, t + d);
+      }
+      function tone(time, freq, dur, gainVal, type = "sine") {
+        if (!ctx || ctx.state === 'closed') return;
+        const g = ctx.createGain();
+        g.connect(master);
+        g.gain.value = 0;
+        const o = ctx.createOscillator();
+        o.type = type;
+        o.frequency.value = freq;
+        o.connect(g);
+        o.start(time);
+        env(g, time, dur, gainVal);
+        o.stop(time + dur);
+      }
+
+      // ======== Build events ========
+      function buildTenor(talea, color, cycles) {
+        const events = [];
+        let tQ = 0;
+        let ci = 0;
+        const colorNotes = parseCSV(color);
+        for (let cyc = 0; cyc < cycles; cyc++) {
+          for (const step of talea) {
+            const dur = step.q;
+            const isRest = step.rest;
+            const note = colorNotes[ci % colorNotes.length];
+            ci++;
+            events.push({ tQ, q: dur, note: isRest ? null : note });
+            tQ += dur;
+          }
+        }
+        return events;
+      }
+      function shiftTalea(talea, shift) {
+        const s = ((shift % talea.length) + talea.length) % talea.length;
+        return [...talea.slice(s), ...talea.slice(0, s)];
+      }
+      function consonantAbove(fTen, interval) {
+        const map = { 3: 4, 6: 9, 5: 7, 8: 12 };
+        const semis = map[interval] ?? 9;
+        return fTen * Math.pow(2, semis / 12);
+      }
+      function buildMotetus(tenorEv, taleaBase, color, shift, interval, avoidParallels) {
+        const talea = shiftTalea(taleaBase, shift);
+        const totalQ = tenorEv.reduce((s, e) => s + e.q, 0);
+        const events = [];
+        let tQ = 0;
+        let ci = 0;
+        let ti = 0;
+        const colorNotes = parseCSV(color);
+        while (tQ < totalQ) {
+          const step = talea[ti % talea.length];
+          const dur = step.q;
+          const isRest = step.rest;
+          const note = colorNotes[ci % colorNotes.length];
+          ti++;
+          ci++;
+          events.push({ tQ, q: dur, note: isRest ? null : note });
+          tQ += dur;
+        }
+        const grid = [];
+        let acc = 0;
+        for (const e of tenorEv) {
+          const f = e.note ? noteToFreq(/\d$/.test(e.note) ? e.note : e.note + "3") : null;
+          grid.push({ startQ: acc, endQ: acc + e.q, f });
+          acc += e.q;
+        }
+        function fTenAt(q) {
+          for (const g of grid) {
+            if (q >= g.startQ && q < g.endQ) return g.f;
+          }
+          return null;
+        }
+        for (let i = 0; i < events.length; i++) {
+          const e = events[i];
+          if (!e.note) continue;
+          const fTen = fTenAt(e.tQ);
+          if (fTen) {
+            let f = consonantAbove(fTen, interval);
+            if (avoidParallels && [5, 8].includes(Number(interval)) && i > 0 && events[i - 1].note) {
+              const prevFTen = fTenAt(events[i - 1].tQ);
+              if (prevFTen && events[i - 1].freqOverride) {
+                const prevFMot = events[i - 1].freqOverride;
+                const prevInterval = Math.round(12 * Math.log2(prevFMot / prevFTen)) % 12;
+                const currentInterval = Math.round(12 * Math.log2(f / fTen)) % 12;
+                if (prevInterval === currentInterval) f = consonantAbove(fTen, 6);
+              }
+            }
+            e.freqOverride = f;
+          }
+        }
+        return events;
+      }
+
+      // ======== Playback & Score ========
+      function playPiece(taleaPattern, colorPattern) {
+        if (playing) return;
+        ensureCtx();
+        playing = true;
+        document.getElementById("play").disabled = true;
+
+        const talea = parseTalea(taleaPattern);
+        const color = colorPattern;
+        if (talea.length === 0 || parseCSV(color).length === 0) {
+            playing = false;
+            document.getElementById("play").disabled = false;
+            return;
+        }
+
+        const cycles = Math.max(1, Math.min(12, Number(document.getElementById("cycles").value) || 1));
+        const tempo = Number(document.getElementById("tempo").value);
+        const beat = 60 / tempo;
+        master.gain.value = Number(document.getElementById("vol").value) / 100;
+        const motShift = Number(document.getElementById("motShift").value) || 0;
+        const motInt = Number(document.getElementById("motInt").value) || 6;
+        const avoidPar = document.getElementById("avoidParallels").checked;
+        const cadence = document.getElementById("cadence").checked;
+        const tenorEv = buildTenor(talea, color, cycles);
+        const motEv = buildMotetus(tenorEv, talea, color, motShift, motInt, avoidPar);
+        const totalQ = tenorEv.reduce((s, e) => s + e.q, 0);
+
+        if (totalQ === 0) {
+            playing = false;
+            document.getElementById("play").disabled = false;
+            return;
+        }
+        
+        const startT = (ctx.currentTime || 0) + 0.15;
+        let acc = 0;
+        for (const e of tenorEv) {
+            const t = startT + acc * beat; const d = e.q * beat;
+            if (e.note) { const n = /\d$/.test(e.note) ? e.note : e.note + "3"; const f = noteToFreq(n); tone(t, f, d, 0.22, "triangle"); }
+            acc += e.q;
+        }
+        for (const e of motEv) {
+            const t = startT + e.tQ * beat; const d = e.q * beat;
+            if (e.note) { const f = e.freqOverride ? e.freqOverride : noteToFreq(/\d$/.test(e.note) ? e.note : e.note + "4"); tone(t, f, d, 0.12, "sine"); }
+        }
+        if (cadence) { const tCad = startT + (totalQ - 1) * beat; tone(tCad, 880, 0.2, 0.12, "sine"); }
+        window.__lastPiece = { tempo, tenorEv, motEv };
+
+        setTimeout(() => {
+            playing = false;
+            document.getElementById("play").disabled = false;
+        }, (totalQ * beat + 0.8) * 1000);
+      }
+
+      function renderScore() {
+        if (!window.__lastPiece) {
+          alert("먼저 재생하여 곡을 생성하세요.");
+          return;
+        }
+        const { tenorEv, motEv } = window.__lastPiece;
+        const pxPerQ = 20, staffGap = 10, left = 40, top = 20;
+        const totalQ = tenorEv.reduce((s, e) => s + e.q, 0);
+        const width = Math.ceil(totalQ * pxPerQ) + 80;
+        const height = top + staffGap * 10 + 60;
+
+        function yFor(noteName, treble = true) {
+          const base = treble ? { name: "B4", y: top + staffGap * 2 } : { name: "D3", y: top + staffGap * 8 };
+          const f = noteToFreq(/\d$/.test(noteName) ? noteName : noteName + (treble ? "4" : "3"));
+          if (!f) return top;
+          const midi = Math.round(69 + 12 * Math.log2(f / 440));
+          const baseMidi = Math.round(69 + 12 * Math.log2(noteToFreq(base.name) / 440));
+          const diff = midi - baseMidi;
+          return base.y - diff * (staffGap / 2);
+        }
+        function drawStaff(yBase, clef) {
+          let s = "";
+          for (let i = 0; i < 5; i++) {
+            const y = yBase + i * staffGap;
+            s += `<line x1="10" y1="${y}" x2="${width - 10}" y2="${y}" stroke="#4b5563" stroke-width="1"/>`;
+          }
+          const clefPath = clef === "G"
+              ? `M ${left - 25} ${yBase + staffGap * 3} C ${left - 10} ${yBase - staffGap}, ${left - 40} ${yBase - staffGap}, ${left - 20} ${yBase + staffGap * 2} S ${left} ${yBase + staffGap * 6}, ${left - 25} ${yBase + staffGap * 5} C ${left - 30} ${yBase + staffGap * 4}, ${left - 20} ${yBase + staffGap * 4}, ${left - 25} ${yBase + staffGap * 3}`
+              : `M ${left - 30} ${yBase + staffGap} C ${left - 15} ${yBase + staffGap * 0.5}, ${left - 15} ${yBase + staffGap * 3.5}, ${left - 30} ${yBase + staffGap * 3} M ${left - 35} ${yBase + staffGap * 1.5} h 10 m -10 1h 10`;
+          s += `<path d="${clefPath}" stroke-width="2" stroke="var(--fg-muted)" fill="none" />`;
+          return s;
+        }
+        function drawRects(evs, treble, color) {
+          let out = "";
+          for (const e of evs) {
+            const x = left + e.tQ * pxPerQ;
+            if (e.note) {
+              const name = /\d$/.test(e.note) ? e.note : e.note + (treble ? "4" : "3");
+              const y = yFor(name, treble);
+              const w = Math.max(4, e.q * pxPerQ - 2);
+              out += `<rect x="${x}" y="${y - 4}" width="${w}" height="8" rx="3" fill="${color}"/>`;
+            }
+          }
+          return out;
+        }
+        let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 ${width} ${height}">`;
+        svg += drawStaff(top, "G");
+        svg += drawStaff(top + staffGap * 7, "F");
+        for (let q = 0; q <= totalQ; q += 4) {
+          const x = left + q * pxPerQ;
+          svg += `<line x1="${x}" y1="${top}" x2="${x}" y2="${top + staffGap * 11}" stroke="#374151" stroke-width="1"/>`;
+        }
+        svg += drawRects(motEv, true, "var(--accent)");
+        svg += drawRects(tenorEv, false, "#fb923c");
+        svg += `</svg>`;
+        const scoreWrap = document.getElementById("scoreWrap");
+        document.getElementById("score").innerHTML = svg;
+        if (!scoreWrap.classList.contains('visible')) {
+            scoreWrap.classList.add("visible");
+        }
+        window.__lastSVG = svg;
+        document.getElementById("downloadSVG").disabled = false;
+        document.getElementById("downloadMXML").disabled = false;
+      }
+
+      // ======== MusicXML export ========
+      function buildMusicXML() {
+        if (!window.__lastPiece) { alert("먼저 재생하여 곡을 생성하세요."); return; }
+        const { tenorEv, motEv } = window.__lastPiece; const divisions = 4;
+        function dur(e) { return Math.round(e.q * divisions); }
+        function typeFromQ(q) { if (q >= 4) return "whole"; if (q >= 2) return "half"; if (q >= 1) return "quarter"; if (q >= 0.5) return "eighth"; return "16th"; }
+        function noteXML(note, q, isRest, freqOverride) {
+          if (isRest || (!note && !freqOverride)) return `<note><rest/><duration>${Math.max(1, dur({ q }))}</duration><type>${typeFromQ(q)}</type></note>`;
+          let midi;
+          if (freqOverride) midi = Math.round(69 + 12 * Math.log2(freqOverride / 440));
+          else { const full = /\d$/.test(note) ? note : note + "4"; const f = noteToFreq(full); midi = Math.round(69 + 12 * Math.log2(f / 440)); }
+          const { step, alter, octave } = midiToStepAlterOct(midi);
+          return `<note><pitch><step>${step}</step>${alter ? `<alter>${alter}</alter>` : ""}<octave>${octave}</octave></pitch><duration>${Math.max(1, dur({ q }))}</duration><type>${typeFromQ(q)}</type></note>`;
+        }
+        function midiToStepAlterOct(midi) { const names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]; let n = (((midi - 12) % 12) + 12) % 12; const step = names[n].replace("#", ""); const alter = names[n].includes("#") ? 1 : 0; const octave = Math.floor((midi - 12) / 12); return { step, alter, octave }; }
+        const attrTreble = `<attributes><divisions>${divisions}</divisions><key><fifths>0</fifths></key><time><beats>4</beats><beat-type>4</beat-type></time><clef><sign>G</sign><line>2</line></clef></attributes>`;
+        const attrBass = `<attributes><divisions>${divisions}</divisions><key><fifths>0</fifths></key><time><beats>4</beats><beat-type>4</beat-type></time><clef><sign>F</sign><line>4</line></clef></attributes>`;
+        let m1 = `<measure number="1">${attrTreble}`;
+        for (const e of motEv) { m1 += noteXML(e.note, e.q, !e.note, e.freqOverride); } m1 += `</measure>`;
+        let m2 = `<measure number="1">${attrBass}`;
+        for (const e of tenorEv) { const n = e.note ? (/\d$/.test(e.note) ? e.note : e.note + "3") : null; m2 += noteXML(n, e.q, !e.note, null); } m2 += `</measure>`;
+        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+<score-partwise version="3.1"><part-list><score-part id="P1"><part-name>Motetus</part-name></score-part><score-part id="P2"><part-name>Tenor</part-name></score-part></part-list><part id="P1">${m1}</part><part id="P2">${m2}</part></score-partwise>`;
+        return xml;
+      }
+      function downloadFile(content, fileName, mimeType) {
+        const blob = new Blob([content], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1500);
+      }
+      
+      // ======== Wire (Event Listeners) ========
+      function updateSelectors() {
+        const taleaSelector = document.getElementById('taleaSelector');
+        const colorSelector = document.getElementById('colorSelector');
+
+        const taleas = getPatterns('talea');
+        const colors = getPatterns('color');
+
+        const currentTaleaIdx = taleaSelector.value;
+        const currentColorIdx = colorSelector.value;
+
+        taleaSelector.innerHTML = '';
+        colorSelector.innerHTML = '';
+
+        taleas.forEach((pattern, i) => {
+            const option = document.createElement('option');
+            option.value = i;
+            let displayText = pattern;
+            if (displayText.length > 30) {
+                displayText = displayText.substring(0, 30) + '...';
+            }
+            option.textContent = displayText;
+            taleaSelector.appendChild(option);
+        });
+
+        colors.forEach((pattern, i) => {
+            const option = document.createElement('option');
+            option.value = i;
+            let displayText = pattern;
+            if (displayText.length > 30) {
+                displayText = displayText.substring(0, 30) + '...';
+            }
+            option.textContent = displayText;
+            colorSelector.appendChild(option);
+        });
+
+        if (currentTaleaIdx < taleas.length) taleaSelector.value = currentTaleaIdx;
+        if (currentColorIdx < colors.length) colorSelector.value = currentColorIdx;
+      }
+
+      document.getElementById("tempo").addEventListener("input", (e) => {
+        document.getElementById("tempoVal").textContent = e.target.value;
+      });
+      document.getElementById("vol").addEventListener("input", (e) => {
+        document.getElementById("volVal").textContent = e.target.value;
+      });
+      document.getElementById("applyMode").onclick = () => {
+        const key = document.getElementById("mode").value;
+        const deg = document.getElementById("scaleDegrees").value;
+        const out = buildColorFromMode(key, deg, 4);
+        if (out) {
+            const colorEl = document.getElementById("color");
+            colorEl.value = (colorEl.value ? colorEl.value + '\n' : '') + out;
+            updateSelectors();
+        }
+      };
+      document.getElementById("play").onclick = () => {
+          const taleas = getPatterns('talea');
+          const colors = getPatterns('color');
+          const taleaIdx = document.getElementById('taleaSelector').value;
+          const colorIdx = document.getElementById('colorSelector').value;
+          
+          const selectedTalea = taleas[taleaIdx];
+          const selectedColor = colors[colorIdx];
+
+          if(!selectedTalea || !selectedColor) {
+              alert("재생할 Talea와 Color를 목록에서 선택해주세요.");
+              return;
+          }
+          playPiece(selectedTalea, selectedColor);
+      };
+      document.getElementById("stop").onclick = stopAudio;
+      document.getElementById("renderScore").onclick = renderScore;
+      document.getElementById("downloadSVG").onclick = () => {
+        if (window.__lastSVG)
+          downloadFile(window.__lastSVG, "motet.svg", "image/svg+xml");
+      };
+      document.getElementById("downloadMXML").onclick = () => {
+        const xml = buildMusicXML();
+        if (xml)
+          downloadFile(
+            xml,
+            "motet.musicxml",
+            "application/vnd.recordare.musicxml+xml"
+          );
+      };
+      
+      document.getElementById('talea').addEventListener('input', updateSelectors);
+      document.getElementById('color').addEventListener('input', updateSelectors);
+      window.addEventListener('DOMContentLoaded', updateSelectors);
+
+    </script>
+  </body>
+</html>
