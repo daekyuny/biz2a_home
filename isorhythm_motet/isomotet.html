@@ -230,14 +230,18 @@
         <div class="row">
           <div class="field">
             <label for="talea">Talea (리듬) - 한 줄에 한 패턴씩 입력</label>
-            <textarea id="talea" placeholder="예: 8,8,4,4,R2,16">8,8,4,4,2,16</textarea>
+            <textarea id="talea" placeholder="예: 8,8,4,4,R2,16">
+8,8,4,4,2,16</textarea
+            >
           </div>
           <div class="field">
             <label for="color">Color (선율) - 한 줄에 한 패턴씩 입력</label>
-            <textarea id="color" placeholder="예: C4,D4,F4,E4,G4,A4">C4,D4,F4,E4,G4,F4,E4,D4</textarea>
+            <textarea id="color" placeholder="예: C4,D4,F4,E4,G4,A4">
+C4,D4,F4,E4,G4,F4,E4,D4</textarea
+            >
           </div>
         </div>
-        
+
         <div class="row">
           <div class="field" style="flex-grow: 0.5">
             <label for="mode">모드 도우미 / Mode Helper</label>
@@ -325,34 +329,65 @@
             <input id="cycles" type="number" min="1" max="12" value="3" />
           </div>
         </div>
-        
-        <div class="row" style="margin-top: 20px;">
-            <div class="field">
-                <label for="taleaSelector">Talea 선택</label>
-                <select id="taleaSelector"></select>
-            </div>
-            <div class="field">
-                <label for="colorSelector">Color 선택</label>
-                <select id="colorSelector"></select>
-            </div>
+
+        <div class="row" style="margin-top: 20px">
+          <div class="field">
+            <label for="taleaSelector">Talea 선택</label>
+            <select id="taleaSelector"></select>
+          </div>
+          <div class="field">
+            <label for="colorSelector">Color 선택</label>
+            <select id="colorSelector"></select>
+          </div>
         </div>
-        <div
-          class="row"
-          style="justify-content: space-between"
-        >
+        <div class="row" style="justify-content: space-between">
           <div>
             <button id="play" class="primary">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M8 5v14l11-7z"></path>
+              </svg>
               재생
             </button>
             <button id="stop" class="danger">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h12v12H6z"></path></svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M6 6h12v12H6z"></path>
+              </svg>
               정지
             </button>
           </div>
           <div>
             <button id="renderScore">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                ></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
               악보 미리보기
             </button>
             <button id="downloadSVG" disabled>SVG 다운로드</button>
@@ -369,6 +404,12 @@
       </div>
     </div>
 
+    // ======== getting around silent mode in iphone ============= dkyoon
+    <audio
+      id="silentAudio"
+      preload="auto"
+      src="data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGliAv4uRioAAAAAADVLRAAAAAAABABWAAAAAmmulwAAAAAAAAD/2BMMwAAB6IAAAAwYAAAA/2BMMwAAA6IAAAAwYAAAA/2BMMwAAB6IAAAAwYAAAA/2BMMwAAA6IAAAAwYAAAA/2BMMwAAB6IAAAAwYAAAA/2BMMwAAA6IAAAAwYAAAA/2BMMwAAB6IAAAAwYAAAA/2BMMwAAA6IAAAAwYAAAA="
+    ></audio>
     <script>
       // ======== State Management ========
       let ctx = null,
@@ -377,20 +418,46 @@
 
       // ======== Pitch & Parse ========
       const A4 = 440;
-      const SEMI = { C: -9, "C#": -8, Db: -8, D: -7, "D#": -6, Eb: -6, E: -5, F: -4, "F#": -3, Gb: -3, G: -2, "G#": -1, Ab: -1, A: 0, "A#": 1, Bb: 1, B: 2 };
+      const SEMI = {
+        C: -9,
+        "C#": -8,
+        Db: -8,
+        D: -7,
+        "D#": -6,
+        Eb: -6,
+        E: -5,
+        F: -4,
+        "F#": -3,
+        Gb: -3,
+        G: -2,
+        "G#": -1,
+        Ab: -1,
+        A: 0,
+        "A#": 1,
+        Bb: 1,
+        B: 2,
+      };
 
       function getPatterns(elementId) {
-          return document.getElementById(elementId).value.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+        return document
+          .getElementById(elementId)
+          .value.split("\n")
+          .map((s) => s.trim())
+          .filter((s) => s.length > 0);
       }
       function noteToFreq(note) {
         const m = (note || "").trim().match(/^([A-G][b#]?)(\d+)?$/);
         if (!m) return null;
-        const name = m[1], oct = m[2] ? parseInt(m[2], 10) : 4;
+        const name = m[1],
+          oct = m[2] ? parseInt(m[2], 10) : 4;
         const semis = (oct - 4) * 12 + (SEMI[name] ?? 0);
         return A4 * Math.pow(2, semis / 12);
       }
       function parseCSV(s) {
-        return s.split(",").map((x) => x.trim()).filter((x) => x.length > 0);
+        return s
+          .split(",")
+          .map((x) => x.trim())
+          .filter((x) => x.length > 0);
       }
       function parseTalea(raw) {
         const toks = parseCSV(raw);
@@ -414,10 +481,43 @@
       function buildColorFromMode(key, degrees, baseOct = 4) {
         const cfg = MODES[key];
         if (!cfg) return null;
-        const degs = parseCSV(degrees).map((x) => parseInt(x, 10)).filter((n) => !isNaN(n));
-        const nameToSemis = { C: 0, "C#": 1, Db: 1, D: 2, "D#": 3, Eb: 3, E: 4, F: 5, "F#": 6, Gb: 6, G: 7, "G#": 8, Ab: 8, A: 9, "A#": 10, Bb: 10, B: 11};
+        const degs = parseCSV(degrees)
+          .map((x) => parseInt(x, 10))
+          .filter((n) => !isNaN(n));
+        const nameToSemis = {
+          C: 0,
+          "C#": 1,
+          Db: 1,
+          D: 2,
+          "D#": 3,
+          Eb: 3,
+          E: 4,
+          F: 5,
+          "F#": 6,
+          Gb: 6,
+          G: 7,
+          "G#": 8,
+          Ab: 8,
+          A: 9,
+          "A#": 10,
+          Bb: 10,
+          B: 11,
+        };
         const tonic = nameToSemis[cfg.tonic] ?? 0;
-        const names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+        const names = [
+          "C",
+          "C#",
+          "D",
+          "D#",
+          "E",
+          "F",
+          "F#",
+          "G",
+          "G#",
+          "A",
+          "A#",
+          "B",
+        ];
         const out = [];
         for (const d of degs) {
           const step = cfg.steps[(d - 1) % 7];
@@ -431,7 +531,7 @@
 
       // ======== Synthesis ========
       function ensureCtx() {
-        if (!ctx || ctx.state === 'closed') {
+        if (!ctx || ctx.state === "closed") {
           ctx = new (window.AudioContext || window.webkitAudioContext)();
           master = ctx.createGain();
           master.connect(ctx.destination);
@@ -440,13 +540,13 @@
       function stopAudio() {
         if (ctx) {
           ctx.close().finally(() => {
-              ctx = null;
-              master = null;
-              playing = false;
-              document.getElementById("play").disabled = false;
+            ctx = null;
+            master = null;
+            playing = false;
+            document.getElementById("play").disabled = false;
           });
         } else {
-            playing = false;
+          playing = false;
         }
       }
       function env(g, t, d, peak = 0.9) {
@@ -454,8 +554,60 @@
         g.gain.linearRampToValueAtTime(peak, t + Math.min(0.02, d * 0.15));
         g.gain.linearRampToValueAtTime(0.0001, t + d);
       }
+
+      // ==== new tone code dkyoon
+      function tone(time, freq, dur, gainVal) {
+        // type 파라미터는 더 이상 필요 없으므로 제거
+        if (!ctx || ctx.state === "closed") return;
+
+        // 1. 모든 오실레이터의 볼륨을 한 번에 조절할 메인 볼륨 조절기(Gain)를 만듭니다.
+        const mainGain = ctx.createGain();
+        mainGain.connect(master);
+        mainGain.gain.value = 0; // 시작 볼륨은 0
+
+        // 2. 기본음(Fundamental)을 재생할 오실레이터를 만듭니다.
+        // 톱니파(sawtooth)는 배음이 풍부하여 오르간 소리에 잘 어울립니다.
+        const osc1 = ctx.createOscillator();
+        osc1.type = "sawtooth";
+        osc1.frequency.value = freq;
+
+        // 3. 한 옥타브 높은 배음을 추가합니다 (주파수 2배).
+        const osc2 = ctx.createOscillator();
+        osc2.type = "sawtooth";
+        osc2.frequency.value = freq * 2;
+
+        // 4. 두 옥타브 높은 배음을 약하게 추가하여 색채감을 더합니다 (주파수 4배).
+        const osc3 = ctx.createOscillator();
+        osc3.type = "sawtooth";
+        osc3.frequency.value = freq * 4;
+
+        // 각 배음의 볼륨을 조절하기 위한 Gain 노드를 만듭니다.
+        const osc2Gain = ctx.createGain();
+        osc2Gain.gain.value = 0.4; // 옥타브 위 음은 볼륨을 40%로
+        const osc3Gain = ctx.createGain();
+        osc3Gain.gain.value = 0.15; // 2옥타브 위 음은 볼륨을 15%로
+
+        // 오실레이터들을 각자의 볼륨 조절기에 연결하고, 이들을 다시 메인 볼륨 조절기에 연결합니다.
+        osc1.connect(mainGain);
+        osc2.connect(osc2Gain).connect(mainGain);
+        osc3.connect(osc3Gain).connect(mainGain);
+
+        // 모든 오실레이터를 동시에 시작하고 정지시킵니다.
+        osc1.start(time);
+        osc2.start(time);
+        osc3.start(time);
+
+        osc1.stop(time + dur);
+        osc2.stop(time + dur);
+        osc3.stop(time + dur);
+
+        // 메인 볼륨 조절기로 전체 소리의 어택과 릴리즈를 조절합니다.
+        env(mainGain, time, dur, gainVal);
+      }
+
+      /* original tone code
       function tone(time, freq, dur, gainVal, type = "sine") {
-        if (!ctx || ctx.state === 'closed') return;
+        if (!ctx || ctx.state === "closed") return;
         const g = ctx.createGain();
         g.connect(master);
         g.gain.value = 0;
@@ -467,6 +619,7 @@
         env(g, time, dur, gainVal);
         o.stop(time + dur);
       }
+      */
 
       // ======== Build events ========
       function buildTenor(talea, color, cycles) {
@@ -495,7 +648,14 @@
         const semis = map[interval] ?? 9;
         return fTen * Math.pow(2, semis / 12);
       }
-      function buildMotetus(tenorEv, taleaBase, color, shift, interval, avoidParallels) {
+      function buildMotetus(
+        tenorEv,
+        taleaBase,
+        color,
+        shift,
+        interval,
+        avoidParallels
+      ) {
         const talea = shiftTalea(taleaBase, shift);
         const totalQ = tenorEv.reduce((s, e) => s + e.q, 0);
         const events = [];
@@ -516,7 +676,9 @@
         const grid = [];
         let acc = 0;
         for (const e of tenorEv) {
-          const f = e.note ? noteToFreq(/\d$/.test(e.note) ? e.note : e.note + "3") : null;
+          const f = e.note
+            ? noteToFreq(/\d$/.test(e.note) ? e.note : e.note + "3")
+            : null;
           grid.push({ startQ: acc, endQ: acc + e.q, f });
           acc += e.q;
         }
@@ -532,13 +694,21 @@
           const fTen = fTenAt(e.tQ);
           if (fTen) {
             let f = consonantAbove(fTen, interval);
-            if (avoidParallels && [5, 8].includes(Number(interval)) && i > 0 && events[i - 1].note) {
+            if (
+              avoidParallels &&
+              [5, 8].includes(Number(interval)) &&
+              i > 0 &&
+              events[i - 1].note
+            ) {
               const prevFTen = fTenAt(events[i - 1].tQ);
               if (prevFTen && events[i - 1].freqOverride) {
                 const prevFMot = events[i - 1].freqOverride;
-                const prevInterval = Math.round(12 * Math.log2(prevFMot / prevFTen)) % 12;
-                const currentInterval = Math.round(12 * Math.log2(f / fTen)) % 12;
-                if (prevInterval === currentInterval) f = consonantAbove(fTen, 6);
+                const prevInterval =
+                  Math.round(12 * Math.log2(prevFMot / prevFTen)) % 12;
+                const currentInterval =
+                  Math.round(12 * Math.log2(f / fTen)) % 12;
+                if (prevInterval === currentInterval)
+                  f = consonantAbove(fTen, 6);
               }
             }
             e.freqOverride = f;
@@ -557,12 +727,15 @@
         const talea = parseTalea(taleaPattern);
         const color = colorPattern;
         if (talea.length === 0 || parseCSV(color).length === 0) {
-            playing = false;
-            document.getElementById("play").disabled = false;
-            return;
+          playing = false;
+          document.getElementById("play").disabled = false;
+          return;
         }
 
-        const cycles = Math.max(1, Math.min(12, Number(document.getElementById("cycles").value) || 1));
+        const cycles = Math.max(
+          1,
+          Math.min(12, Number(document.getElementById("cycles").value) || 1)
+        );
         const tempo = Number(document.getElementById("tempo").value);
         const beat = 60 / tempo;
         master.gain.value = Number(document.getElementById("vol").value) / 100;
@@ -571,32 +744,85 @@
         const avoidPar = document.getElementById("avoidParallels").checked;
         const cadence = document.getElementById("cadence").checked;
         const tenorEv = buildTenor(talea, color, cycles);
-        const motEv = buildMotetus(tenorEv, talea, color, motShift, motInt, avoidPar);
+        const motEv = buildMotetus(
+          tenorEv,
+          talea,
+          color,
+          motShift,
+          motInt,
+          avoidPar
+        );
         const totalQ = tenorEv.reduce((s, e) => s + e.q, 0);
 
         if (totalQ === 0) {
-            playing = false;
-            document.getElementById("play").disabled = false;
-            return;
+          playing = false;
+          document.getElementById("play").disabled = false;
+          return;
         }
-        
+
         const startT = (ctx.currentTime || 0) + 0.15;
+
+        /* olde code begin - dkyoon
         let acc = 0;
         for (const e of tenorEv) {
-            const t = startT + acc * beat; const d = e.q * beat;
-            if (e.note) { const n = /\d$/.test(e.note) ? e.note : e.note + "3"; const f = noteToFreq(n); tone(t, f, d, 0.22, "triangle"); }
-            acc += e.q;
+          const t = startT + acc * beat;
+          const d = e.q * beat;
+          if (e.note) {
+            const n = /\d$/.test(e.note) ? e.note : e.note + "3";
+            const f = noteToFreq(n);
+            tone(t, f, d, 0.22, "triangle");
+          }
+          acc += e.q;
         }
         for (const e of motEv) {
-            const t = startT + e.tQ * beat; const d = e.q * beat;
-            if (e.note) { const f = e.freqOverride ? e.freqOverride : noteToFreq(/\d$/.test(e.note) ? e.note : e.note + "4"); tone(t, f, d, 0.12, "sine"); }
+          const t = startT + e.tQ * beat;
+          const d = e.q * beat;
+          if (e.note) {
+            const f = e.freqOverride
+              ? e.freqOverride
+              : noteToFreq(/\d$/.test(e.note) ? e.note : e.note + "4");
+            tone(t, f, d, 0.12, "sine");
+          }
         }
-        if (cadence) { const tCad = startT + (totalQ - 1) * beat; tone(tCad, 880, 0.2, 0.12, "sine"); }
+        if (cadence) {
+          const tCad = startT + (totalQ - 1) * beat;
+          tone(tCad, 880, 0.2, 0.12, "sine");
+        }
+        old code end dkyoon */
+
+        // new code begin  dkyoon
+        let acc = 0;
+        for (const e of tenorEv) {
+          const t = startT + acc * beat;
+          const d = e.q * beat;
+          if (e.note) {
+            const n = /\d$/.test(e.note) ? e.note : e.note + "3";
+            const f = noteToFreq(n);
+            tone(t, f, d, 0.15);
+          } // 볼륨 조정 및 'triangle' 삭제
+          acc += e.q;
+        }
+        for (const e of motEv) {
+          const t = startT + e.tQ * beat;
+          const d = e.q * beat;
+          if (e.note) {
+            const f = e.freqOverride
+              ? e.freqOverride
+              : noteToFreq(/\d$/.test(e.note) ? e.note : e.note + "4");
+            tone(t, f, d, 0.1);
+          } //  볼륨 조정 및 'sine' 삭제
+        }
+        if (cadence) {
+          const tCad = startT + (totalQ - 1) * beat;
+          tone(tCad, 880, 0.2, 0.1);
+        } // 'sine' 삭제
+        // new code end dkyoon
+
         window.__lastPiece = { tempo, tenorEv, motEv };
 
         setTimeout(() => {
-            playing = false;
-            document.getElementById("play").disabled = false;
+          playing = false;
+          document.getElementById("play").disabled = false;
         }, (totalQ * beat + 0.8) * 1000);
       }
 
@@ -606,17 +832,26 @@
           return;
         }
         const { tenorEv, motEv } = window.__lastPiece;
-        const pxPerQ = 20, staffGap = 10, left = 40, top = 20;
+        const pxPerQ = 20,
+          staffGap = 10,
+          left = 40,
+          top = 20;
         const totalQ = tenorEv.reduce((s, e) => s + e.q, 0);
         const width = Math.ceil(totalQ * pxPerQ) + 80;
         const height = top + staffGap * 10 + 60;
 
         function yFor(noteName, treble = true) {
-          const base = treble ? { name: "B4", y: top + staffGap * 2 } : { name: "D3", y: top + staffGap * 8 };
-          const f = noteToFreq(/\d$/.test(noteName) ? noteName : noteName + (treble ? "4" : "3"));
+          const base = treble
+            ? { name: "B4", y: top + staffGap * 2 }
+            : { name: "D3", y: top + staffGap * 8 };
+          const f = noteToFreq(
+            /\d$/.test(noteName) ? noteName : noteName + (treble ? "4" : "3")
+          );
           if (!f) return top;
           const midi = Math.round(69 + 12 * Math.log2(f / 440));
-          const baseMidi = Math.round(69 + 12 * Math.log2(noteToFreq(base.name) / 440));
+          const baseMidi = Math.round(
+            69 + 12 * Math.log2(noteToFreq(base.name) / 440)
+          );
           const diff = midi - baseMidi;
           return base.y - diff * (staffGap / 2);
         }
@@ -624,11 +859,26 @@
           let s = "";
           for (let i = 0; i < 5; i++) {
             const y = yBase + i * staffGap;
-            s += `<line x1="10" y1="${y}" x2="${width - 10}" y2="${y}" stroke="#4b5563" stroke-width="1"/>`;
+            s += `<line x1="10" y1="${y}" x2="${
+              width - 10
+            }" y2="${y}" stroke="#4b5563" stroke-width="1"/>`;
           }
-          const clefPath = clef === "G"
-              ? `M ${left - 25} ${yBase + staffGap * 3} C ${left - 10} ${yBase - staffGap}, ${left - 40} ${yBase - staffGap}, ${left - 20} ${yBase + staffGap * 2} S ${left} ${yBase + staffGap * 6}, ${left - 25} ${yBase + staffGap * 5} C ${left - 30} ${yBase + staffGap * 4}, ${left - 20} ${yBase + staffGap * 4}, ${left - 25} ${yBase + staffGap * 3}`
-              : `M ${left - 30} ${yBase + staffGap} C ${left - 15} ${yBase + staffGap * 0.5}, ${left - 15} ${yBase + staffGap * 3.5}, ${left - 30} ${yBase + staffGap * 3} M ${left - 35} ${yBase + staffGap * 1.5} h 10 m -10 1h 10`;
+          const clefPath =
+            clef === "G"
+              ? `M ${left - 25} ${yBase + staffGap * 3} C ${left - 10} ${
+                  yBase - staffGap
+                }, ${left - 40} ${yBase - staffGap}, ${left - 20} ${
+                  yBase + staffGap * 2
+                } S ${left} ${yBase + staffGap * 6}, ${left - 25} ${
+                  yBase + staffGap * 5
+                } C ${left - 30} ${yBase + staffGap * 4}, ${left - 20} ${
+                  yBase + staffGap * 4
+                }, ${left - 25} ${yBase + staffGap * 3}`
+              : `M ${left - 30} ${yBase + staffGap} C ${left - 15} ${
+                  yBase + staffGap * 0.5
+                }, ${left - 15} ${yBase + staffGap * 3.5}, ${left - 30} ${
+                  yBase + staffGap * 3
+                } M ${left - 35} ${yBase + staffGap * 1.5} h 10 m -10 1h 10`;
           s += `<path d="${clefPath}" stroke-width="2" stroke="var(--fg-muted)" fill="none" />`;
           return s;
         }
@@ -637,10 +887,14 @@
           for (const e of evs) {
             const x = left + e.tQ * pxPerQ;
             if (e.note) {
-              const name = /\d$/.test(e.note) ? e.note : e.note + (treble ? "4" : "3");
+              const name = /\d$/.test(e.note)
+                ? e.note
+                : e.note + (treble ? "4" : "3");
               const y = yFor(name, treble);
               const w = Math.max(4, e.q * pxPerQ - 2);
-              out += `<rect x="${x}" y="${y - 4}" width="${w}" height="8" rx="3" fill="${color}"/>`;
+              out += `<rect x="${x}" y="${
+                y - 4
+              }" width="${w}" height="8" rx="3" fill="${color}"/>`;
             }
           }
           return out;
@@ -650,15 +904,17 @@
         svg += drawStaff(top + staffGap * 7, "F");
         for (let q = 0; q <= totalQ; q += 4) {
           const x = left + q * pxPerQ;
-          svg += `<line x1="${x}" y1="${top}" x2="${x}" y2="${top + staffGap * 11}" stroke="#374151" stroke-width="1"/>`;
+          svg += `<line x1="${x}" y1="${top}" x2="${x}" y2="${
+            top + staffGap * 11
+          }" stroke="#374151" stroke-width="1"/>`;
         }
         svg += drawRects(motEv, true, "var(--accent)");
         svg += drawRects(tenorEv, false, "#fb923c");
         svg += `</svg>`;
         const scoreWrap = document.getElementById("scoreWrap");
         document.getElementById("score").innerHTML = svg;
-        if (!scoreWrap.classList.contains('visible')) {
-            scoreWrap.classList.add("visible");
+        if (!scoreWrap.classList.contains("visible")) {
+          scoreWrap.classList.add("visible");
         }
         window.__lastSVG = svg;
         document.getElementById("downloadSVG").disabled = false;
@@ -667,25 +923,82 @@
 
       // ======== MusicXML export ========
       function buildMusicXML() {
-        if (!window.__lastPiece) { alert("먼저 재생하여 곡을 생성하세요."); return; }
-        const { tenorEv, motEv } = window.__lastPiece; const divisions = 4;
-        function dur(e) { return Math.round(e.q * divisions); }
-        function typeFromQ(q) { if (q >= 4) return "whole"; if (q >= 2) return "half"; if (q >= 1) return "quarter"; if (q >= 0.5) return "eighth"; return "16th"; }
-        function noteXML(note, q, isRest, freqOverride) {
-          if (isRest || (!note && !freqOverride)) return `<note><rest/><duration>${Math.max(1, dur({ q }))}</duration><type>${typeFromQ(q)}</type></note>`;
-          let midi;
-          if (freqOverride) midi = Math.round(69 + 12 * Math.log2(freqOverride / 440));
-          else { const full = /\d$/.test(note) ? note : note + "4"; const f = noteToFreq(full); midi = Math.round(69 + 12 * Math.log2(f / 440)); }
-          const { step, alter, octave } = midiToStepAlterOct(midi);
-          return `<note><pitch><step>${step}</step>${alter ? `<alter>${alter}</alter>` : ""}<octave>${octave}</octave></pitch><duration>${Math.max(1, dur({ q }))}</duration><type>${typeFromQ(q)}</type></note>`;
+        if (!window.__lastPiece) {
+          alert("먼저 재생하여 곡을 생성하세요.");
+          return;
         }
-        function midiToStepAlterOct(midi) { const names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]; let n = (((midi - 12) % 12) + 12) % 12; const step = names[n].replace("#", ""); const alter = names[n].includes("#") ? 1 : 0; const octave = Math.floor((midi - 12) / 12); return { step, alter, octave }; }
+        const { tenorEv, motEv } = window.__lastPiece;
+        const divisions = 4;
+        function dur(e) {
+          return Math.round(e.q * divisions);
+        }
+        function typeFromQ(q) {
+          if (q >= 4) return "whole";
+          if (q >= 2) return "half";
+          if (q >= 1) return "quarter";
+          if (q >= 0.5) return "eighth";
+          return "16th";
+        }
+        function noteXML(note, q, isRest, freqOverride) {
+          if (isRest || (!note && !freqOverride))
+            return `<note><rest/><duration>${Math.max(
+              1,
+              dur({ q })
+            )}</duration><type>${typeFromQ(q)}</type></note>`;
+          let midi;
+          if (freqOverride)
+            midi = Math.round(69 + 12 * Math.log2(freqOverride / 440));
+          else {
+            const full = /\d$/.test(note) ? note : note + "4";
+            const f = noteToFreq(full);
+            midi = Math.round(69 + 12 * Math.log2(f / 440));
+          }
+          const { step, alter, octave } = midiToStepAlterOct(midi);
+          return `<note><pitch><step>${step}</step>${
+            alter ? `<alter>${alter}</alter>` : ""
+          }<octave>${octave}</octave></pitch><duration>${Math.max(
+            1,
+            dur({ q })
+          )}</duration><type>${typeFromQ(q)}</type></note>`;
+        }
+        function midiToStepAlterOct(midi) {
+          const names = [
+            "C",
+            "C#",
+            "D",
+            "D#",
+            "E",
+            "F",
+            "F#",
+            "G",
+            "G#",
+            "A",
+            "A#",
+            "B",
+          ];
+          let n = (((midi - 12) % 12) + 12) % 12;
+          const step = names[n].replace("#", "");
+          const alter = names[n].includes("#") ? 1 : 0;
+          const octave = Math.floor((midi - 12) / 12);
+          return { step, alter, octave };
+        }
         const attrTreble = `<attributes><divisions>${divisions}</divisions><key><fifths>0</fifths></key><time><beats>4</beats><beat-type>4</beat-type></time><clef><sign>G</sign><line>2</line></clef></attributes>`;
         const attrBass = `<attributes><divisions>${divisions}</divisions><key><fifths>0</fifths></key><time><beats>4</beats><beat-type>4</beat-type></time><clef><sign>F</sign><line>4</line></clef></attributes>`;
         let m1 = `<measure number="1">${attrTreble}`;
-        for (const e of motEv) { m1 += noteXML(e.note, e.q, !e.note, e.freqOverride); } m1 += `</measure>`;
+        for (const e of motEv) {
+          m1 += noteXML(e.note, e.q, !e.note, e.freqOverride);
+        }
+        m1 += `</measure>`;
         let m2 = `<measure number="1">${attrBass}`;
-        for (const e of tenorEv) { const n = e.note ? (/\d$/.test(e.note) ? e.note : e.note + "3") : null; m2 += noteXML(n, e.q, !e.note, null); } m2 += `</measure>`;
+        for (const e of tenorEv) {
+          const n = e.note
+            ? /\d$/.test(e.note)
+              ? e.note
+              : e.note + "3"
+            : null;
+          m2 += noteXML(n, e.q, !e.note, null);
+        }
+        m2 += `</measure>`;
         const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
 <score-partwise version="3.1"><part-list><score-part id="P1"><part-name>Motetus</part-name></score-part><score-part id="P2"><part-name>Tenor</part-name></score-part></part-list><part id="P1">${m1}</part><part id="P2">${m2}</part></score-partwise>`;
@@ -700,45 +1013,47 @@
         a.click();
         setTimeout(() => URL.revokeObjectURL(url), 1500);
       }
-      
+
       // ======== Wire (Event Listeners) ========
       function updateSelectors() {
-        const taleaSelector = document.getElementById('taleaSelector');
-        const colorSelector = document.getElementById('colorSelector');
+        const taleaSelector = document.getElementById("taleaSelector");
+        const colorSelector = document.getElementById("colorSelector");
 
-        const taleas = getPatterns('talea');
-        const colors = getPatterns('color');
+        const taleas = getPatterns("talea");
+        const colors = getPatterns("color");
 
         const currentTaleaIdx = taleaSelector.value;
         const currentColorIdx = colorSelector.value;
 
-        taleaSelector.innerHTML = '';
-        colorSelector.innerHTML = '';
+        taleaSelector.innerHTML = "";
+        colorSelector.innerHTML = "";
 
         taleas.forEach((pattern, i) => {
-            const option = document.createElement('option');
-            option.value = i;
-            let displayText = pattern;
-            if (displayText.length > 30) {
-                displayText = displayText.substring(0, 30) + '...';
-            }
-            option.textContent = displayText;
-            taleaSelector.appendChild(option);
+          const option = document.createElement("option");
+          option.value = i;
+          let displayText = pattern;
+          if (displayText.length > 30) {
+            displayText = displayText.substring(0, 30) + "...";
+          }
+          option.textContent = displayText;
+          taleaSelector.appendChild(option);
         });
 
         colors.forEach((pattern, i) => {
-            const option = document.createElement('option');
-            option.value = i;
-            let displayText = pattern;
-            if (displayText.length > 30) {
-                displayText = displayText.substring(0, 30) + '...';
-            }
-            option.textContent = displayText;
-            colorSelector.appendChild(option);
+          const option = document.createElement("option");
+          option.value = i;
+          let displayText = pattern;
+          if (displayText.length > 30) {
+            displayText = displayText.substring(0, 30) + "...";
+          }
+          option.textContent = displayText;
+          colorSelector.appendChild(option);
         });
 
-        if (currentTaleaIdx < taleas.length) taleaSelector.value = currentTaleaIdx;
-        if (currentColorIdx < colors.length) colorSelector.value = currentColorIdx;
+        if (currentTaleaIdx < taleas.length)
+          taleaSelector.value = currentTaleaIdx;
+        if (currentColorIdx < colors.length)
+          colorSelector.value = currentColorIdx;
       }
 
       document.getElementById("tempo").addEventListener("input", (e) => {
@@ -752,25 +1067,45 @@
         const deg = document.getElementById("scaleDegrees").value;
         const out = buildColorFromMode(key, deg, 4);
         if (out) {
-            const colorEl = document.getElementById("color");
-            colorEl.value = (colorEl.value ? colorEl.value + '\n' : '') + out;
-            updateSelectors();
+          const colorEl = document.getElementById("color");
+          colorEl.value = (colorEl.value ? colorEl.value + "\n" : "") + out;
+          updateSelectors();
         }
       };
-      document.getElementById("play").onclick = () => {
-          const taleas = getPatterns('talea');
-          const colors = getPatterns('color');
-          const taleaIdx = document.getElementById('taleaSelector').value;
-          const colorIdx = document.getElementById('colorSelector').value;
-          
-          const selectedTalea = taleas[taleaIdx];
-          const selectedColor = colors[colorIdx];
 
-          if(!selectedTalea || !selectedColor) {
-              alert("재생할 Talea와 Color를 목록에서 선택해주세요.");
-              return;
-          }
-          playPiece(selectedTalea, selectedColor);
+      // getting around iphone silent mode dkyoon
+      let audioUnlocked = false; // 오디오 잠금 해제 상태를 저장할 변수
+
+      function unlockAudio() {
+        if (audioUnlocked) return;
+        const silentAudio = document.getElementById("silentAudio");
+        silentAudio
+          .play()
+          .then(() => {
+            silentAudio.pause();
+            silentAudio.currentTime = 0;
+            audioUnlocked = true;
+            console.log("Audio context unlocked for iOS.");
+          })
+          .catch((e) => console.error("Audio unlock failed.", e));
+      }
+
+      document.getElementById("play").onclick = () => {
+        unlockAudio(); // **가장 먼저 오디오 잠금 해제 함수 호출** dkyoon
+
+        const taleas = getPatterns("talea");
+        const colors = getPatterns("color");
+        const taleaIdx = document.getElementById("taleaSelector").value;
+        const colorIdx = document.getElementById("colorSelector").value;
+
+        const selectedTalea = taleas[taleaIdx];
+        const selectedColor = colors[colorIdx];
+
+        if (!selectedTalea || !selectedColor) {
+          alert("재생할 Talea와 Color를 목록에서 선택해주세요.");
+          return;
+        }
+        playPiece(selectedTalea, selectedColor);
       };
       document.getElementById("stop").onclick = stopAudio;
       document.getElementById("renderScore").onclick = renderScore;
@@ -787,11 +1122,14 @@
             "application/vnd.recordare.musicxml+xml"
           );
       };
-      
-      document.getElementById('talea').addEventListener('input', updateSelectors);
-      document.getElementById('color').addEventListener('input', updateSelectors);
-      window.addEventListener('DOMContentLoaded', updateSelectors);
 
+      document
+        .getElementById("talea")
+        .addEventListener("input", updateSelectors);
+      document
+        .getElementById("color")
+        .addEventListener("input", updateSelectors);
+      window.addEventListener("DOMContentLoaded", updateSelectors);
     </script>
   </body>
 </html>
