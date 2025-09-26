@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Isorhythmic Motet Player v4 / 아이소리듬 모테트 연주기 v4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root { --bg:#111827; --panel:#1f2937; --text:#e5e7eb; --muted:#9ca3af; --accent:#22c55e; --danger:#ef4444; --border:#374151; }
+  *{box-sizing:border-box}
+  body{margin:0; font-family:Inter, 'Noto Sans KR', system-ui, -apple-system, Segoe UI, Roboto, Arial, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background:var(--bg); color:var(--text);}
+  .container{max-width:1100px; margin:24px auto; padding:0 16px;}
+  h1{font-size:24px; margin:0 0 6px}
+  .sub{color:var(--muted); margin-bottom:18px}
+  .card{background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:16px 16px 18px; margin:14px 0;}
+  .row{display:flex; gap:14px; flex-wrap:wrap}
+  .field{flex:1; min-width:240px; display:flex; flex-direction:column; gap:6px}
+  label{font-size:12px; color:var(--muted)}
+  textarea, input, select{background:#0b1220; color:var(--text); border:1px solid var(--border); border-radius:10px; padding:10px; font-size:14px}
+  textarea{min-height:64px; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+  .controls-grid{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:12px}
+  .controls-grid .field{min-width:0}
+  .btns{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+  button{background:#0b1220; color:var(--text); border:1px solid var(--border); border-radius:10px; padding:10px 12px; cursor:pointer}
+  button.primary{background:var(--accent); color:#0a0f1a; border-color:transparent; font-weight:700}
+  button.danger{background:var(--danger); border-color:transparent; color:white; font-weight:700}
+  .checkbox-label{display:flex; gap:8px; align-items:center; user-select:none}
+  #score{background:#0b1220; border:1px dashed var(--border); min-height:140px; display:flex; align-items:center; justify-content:center; border-radius:12px}
+  .help{font-size:13px; color:var(--muted); line-height:1.6}
+  .badge{display:inline-block; background:#0b1220; border:1px solid var(--border); padding:2px 8px; border-radius:999px; font-size:12px; color:var(--muted)}
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Isorhythmic Motet Player v4 <span class="badge">Talea×Color Segments</span></h1>
+    <div class="sub">세 개의 Talea와 세 개의 Color를 조합해 테너를 3구간(세그먼트)으로 구성하고, 상성부 옵션을 적용해 재생·미리보기·다운로드할 수 있습니다.</div>
+
+    <div class="card">
+      <h2>사용 방법 / How to Use</h2>
+      <div class="help">
+        <p><b>1단계 (Step 1): Talea A/B/C</b> — 각 Talea 입력칸에 리듬 값을 쉼표로 적습니다. 예: <code>8,8,4,4,2,16</code> 또는 쉼표 <code>R2</code>.</p>
+        <p><b>2단계 (Step 2): Color 1/2/3</b> — 각 Color 입력칸에 음이름을 쉼표로 적습니다. 예: <code>C4,D4,F4,E4,G4,F4,E4,D4</code>.</p>
+        <p><b>3단계 (Step 3): Tenor 세그먼트 구성</b> — 세 구간 각각에 대해 <i>Talea + Color</i> 조합을 선택합니다. 예: (A+2), (C+1), (B+2). 반복 횟수(회전)는 아래에서 설정합니다.</p>
+        <p><b>4단계 (Step 4): 상성부 옵션</b> — v3_2와 동일하게 시차(0–12)와 음 간격(3도,6도,5도,8도)을 지정하고, 평행 완전음정 회피 및 마지막 종지 신호를 켭니다.</p>
+        <p><b>5단계 (Step 5): 재생 및 내보내기</b> — 템포와 음량을 정하고 [재생/정지]. [악보 미리보기]로 SVG를 만들고 [SVG 다운로드], [MusicXML 다운로드] 버튼으로 저장합니다.</p>
+        <hr/>
+        <p><b>Tips:</b> Mode Helper(모드 전용)를 사용하면 선택한 모드와 단계로 간단히 선율(Color)을 생성하여 원하는 Color 입력칸에 붙여넣을 수 있습니다.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>1. Taleas (Rhythms)</h2>
+      <div class="row">
+        <div class="field">
+          <label for="taleaA">Talea A (예: 8,8,4,4,2,16 / 쉼표는 R2)</label>
+          <textarea id="taleaA">8,8,4,4,2,16</textarea>
+        </div>
+        <div class="field">
+          <label for="taleaB">Talea B</label>
+          <textarea id="taleaB">8,8,8,4,4,2</textarea>
+        </div>
+        <div class="field">
+          <label for="taleaC">Talea C</label>
+          <textarea id="taleaC">4,4,4,4,8,8</textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>2. Colors (Melodies)</h2>
+      <div class="row">
+        <div class="field">
+          <label for="color1">Color 1 (예: C4,D4,F4,E4,G4,F4,E4,D4)</label>
+          <textarea id="color1">C4,D4,F4,E4,G4,F4,E4,D4</textarea>
+        </div>
+        <div class="field">
+          <label for="color2">Color 2</label>
+          <textarea id="color2">E4,F4,G4,A4,B4,A4,G4,F4</textarea>
+        </div>
+        <div class="field">
+          <label for="color3">Color 3</label>
+          <textarea id="color3">G3,A3,B3,C4,D4,C4,B3,A3</textarea>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field" style="flex:0.5">
+          <label for="mode">모드 도우미 / Mode Helper</label>
+          <select id="mode">
+            <option value="D dorian">D dorian</option>
+            <option value="E phrygian">E phrygian</option>
+            <option value="F lydian">F lydian</option>
+            <option value="G mixolydian">G mixolydian</option>
+            <option value="A aeolian">A aeolian</option>
+            <option value="B locrian">B locrian</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="scaleDegrees">스케일 단계 / Scale Degrees</label>
+          <input id="scaleDegrees" type="text" value="1,2,4,3,5,4,3,2" />
+        </div>
+        <div class="field" style="align-self:flex-end">
+          <button id="makeColor">Color 생성 (클립보드 복사)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>3. Tenor 구성 / Tenor Segments</h2>
+      <div class="controls-grid">
+        <div class="field"><label>세그먼트 1 Talea</label><select id="seg1Talea"></select></div>
+        <div class="field"><label>세그먼트 1 Color</label><select id="seg1Color"></select></div>
+        <div class="field"><label>세그먼트 2 Talea</label><select id="seg2Talea"></select></div>
+        <div class="field"><label>세그먼트 2 Color</label><select id="seg2Color"></select></div>
+        <div class="field"><label>세그먼트 3 Talea</label><select id="seg3Talea"></select></div>
+        <div class="field"><label>세그먼트 3 Color</label><select id="seg3Color"></select></div>
+        <div class="field"><label for="cycles">반복 / Repetitions</label><input id="cycles" type="number" min="1" max="12" value="3"/></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>4. 상성부 옵션 / Upper Voice Options</h2>
+      <div class="controls-grid">
+        <div class="field">
+          <label for="motShift">시차 (0–12) / Time Offset</label>
+          <input id="motShift" type="number" min="0" max="12" value="0"/>
+        </div>
+        <div class="field">
+          <label for="motInterval">음 간격 (3,6,5,8) / Interval</label>
+          <select id="motInterval">
+            <option value="3">3rd above</option>
+            <option value="6" selected>6th above</option>
+            <option value="5">5th above</option>
+            <option value="8">Octave above</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="checkbox-label"><input type="checkbox" id="avoidParallels" checked/> 평행 완전음정 회피 / Avoid Parallel Perfects</label>
+        </div>
+        <div class="field">
+          <label class="checkbox-label"><input type="checkbox" id="cadence" checked/> 마지막 종지 신호 / Final Cadence Signal</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>5. 재생 및 내보내기 / Playback & Export</h2>
+      <div class="controls-grid">
+        <div class="field"><label for="tempo">템포 / Tempo (BPM)</label><input id="tempo" type="number" min="30" max="240" value="100"/></div>
+        <div class="field"><label for="volume">음량 / Volume</label><input id="volume" type="range" min="0" max="100" value="70"/></div>
+      </div>
+      <div class="btns" style="justify-content:space-between; margin-top:10px">
+        <div>
+          <button id="play" class="primary">재생 / Play</button>
+          <button id="stop" class="danger">정지 / Stop</button>
+        </div>
+        <div>
+          <button id="renderScore">악보 미리보기 / Render SVG</button>
+          <button id="downloadSVG" disabled>SVG 다운로드</button>
+          <button id="downloadXML" disabled>MusicXML 다운로드</button>
+        </div>
+      </div>
+      <div id="score" style="margin-top:12px">SVG score will appear here / 악보 SVG가 여기에 표시됩니다</div>
+    </div>
+  </div>
+
+<script>
+// === Helpers from v3_2 (adapted) ===
+const SEMI = { C:0, 'C#':1, Db:1, D:2, 'D#':3, Eb:3, E:4, F:5, 'F#':6, Gb:6, G:7, 'G#':8, Ab:8, A:9, 'A#':10, Bb:10, B:11 };
+const A4 = 440;
+
+function parseCSV(s){ return s.split(',').map(x=>x.trim()).filter(x=>x.length>0); }
+
+function noteToFreq(note){
+  if(!note) return null;
+  const m = note.trim().match(/^([A-Ga-g](?:#|b)?)(\d)?$/);
+  if(!m) return null;
+  const name = m[1].toUpperCase(); const oct = m[2]? parseInt(m[2],10):4;
+  const semis = (oct-4)*12 + (SEMI[name] ?? 0);
+  return A4 * Math.pow(2, semis/12);
+}
+
+function parseTalea(raw){
+  const toks = parseCSV(raw); const out = [];
+  for(const tk of toks){
+    const m = tk.match(/^R?(\d{1,2})$/i); if(!m) continue;
+    const val = parseInt(m[1],10); if(![16,8,4,2].includes(val)) continue;
+    const q = 4/val; const rest = /^R/i.test(tk);
+    out.push({q, rest});
+  }
+  return out;
+}
+
+// Build tenor from 3 segments (each segment has its own talea+color), then repeat by cycles
+function buildTenorSegments(segments, cycles){
+  const events = []; let tQ = 0;
+  for(let cyc=0; cyc<cycles; cyc++){
+    for(const seg of segments){
+      const talea = seg.talea; const colorNotes = parseCSV(seg.color);
+      let ci = 0;
+      for(const step of talea){
+        const dur = step.q, isRest = step.rest;
+        const note = colorNotes.length? colorNotes[ci % colorNotes.length] : null;
+        ci++;
+        events.push({ tQ, q: dur, note: isRest? null: note });
+        tQ += dur;
+      }
+    }
+  }
+  return events;
+}
+
+// Shift any talea steps by 'shift' positions
+function shiftTalea(talea, shift){
+  const s = ((shift % talea.length) + talea.length) % talea.length;
+  return [...talea.slice(s), ...talea.slice(0,s)];
+}
+
+// consonant above (in semitone mapping from diatonic interval choice)
+function consonantAbove(freqTen, interval){
+  const map = { 3:4, 6:9, 5:7, 8:12 };
+  const semis = map[interval] ?? 9;
+  return freqTen * Math.pow(2, semis/12);
+}
+
+// Build motetus aligned to tenor events (deriving pitch from each tenor note directly)
+function buildMotetusFromTenor(tenorEv, motShift, motInterval, avoidParallels, cadence){
+  if(tenorEv.length===0) return [];
+  // For rhythm: take a base talea from tenor steps (note/rest durations), then shift
+  const base = tenorEv.map(e=>({q:e.q, rest: !e.note}));
+  const shifted = shiftTalea(base, motShift);
+  // Create motetus by mapping above consonant intervals; if avoid parallels, nudge some notes (+1 semitone) when consecutive perfects detected
+  const ev = []; let lastTenF = null; let lastMotF = null;
+  for(let i=0;i<shifted.length;i++){
+    const s = shifted[i];
+    const ten = tenorEv[i] || tenorEv[tenorEv.length-1];
+    const q = s.q;
+    if(s.rest || !ten.note){ ev.push({q, note:null}); lastMotF=null; lastTenF=null; continue; }
+    const tenNote = /\d$/.test(ten.note)? ten.note : ten.note + "3";
+    const fTen = noteToFreq(tenNote);
+    let fMot = consonantAbove(fTen, motInterval);
+    // Avoid parallel perfects: if last interval was ~7 or 12 semitones and both move in same direction, nudge mot up a semitone
+    if(avoidParallels && lastTenF && lastMotF){
+      const lastInt = Math.round(12*Math.log2(lastMotF/lastTenF));
+      const currInt = Math.round(12*Math.log2(fMot/fTen));
+      // perfects 7 or 12
+      if((lastInt in {7:1,12:1} || currInt in {7:1,12:1}) && Math.abs(Math.log2(fTen/lastTenF))>0){
+        fMot = fMot * Math.pow(2, 1/12);
+      }
+    }
+    // cadence: if last event, force 8ve above tenor
+    if(cadence && i===shifted.length-1){
+      fMot = consonantAbove(fTen, 8);
+    }
+    ev.push({q, freqOverride:fMot, note: ten.note}); // keep note label for export lanes
+    lastTenF = fTen; lastMotF = fMot;
+  }
+  return ev;
+}
+
+// Playback (basic WebAudio sine/triangle synth)
+let ctx = null, master = null, playing=false, stopFns=[];
+function ensureAudio(){
+  if(!ctx){ ctx = new (window.AudioContext || window.webkitAudioContext)(); }
+  if(!master){ master = ctx.createGain(); master.connect(ctx.destination); }
+}
+
+function now(){ return ctx ? ctx.currentTime : 0; }
+
+function scheduleTone(tStart, durSec, freq, gain, type="sine"){
+  const osc = ctx.createOscillator(); const g = ctx.createGain();
+  osc.type = type; osc.frequency.value = freq;
+  g.gain.value = 0; g.gain.linearRampToValueAtTime(gain, tStart+0.01);
+  g.gain.linearRampToValueAtTime(0.0001, tStart+durSec-0.02);
+  osc.connect(g); g.connect(master); osc.start(tStart); osc.stop(tStart+durSec);
+  stopFns.push(()=>{ try{osc.stop(0);}catch(e){} });
+}
+
+function playPiece(tenorEv, motEv, tempo, vol){
+  ensureAudio(); playing=true; stopFns=[];
+  master.gain.value = vol;
+  const beat = 60/tempo; const t0 = now()+0.1;
+  let acc=0;
+  for(const e of tenorEv){
+    const t = t0 + acc*beat; const d = e.q*beat;
+    if(e.note){ const n = /\d$/.test(e.note)? e.note : (e.note+"3"); const f = noteToFreq(n); scheduleTone(t, d, f, 0.25, "triangle"); }
+    acc += e.q;
+  }
+  acc=0;
+  for(const e of motEv){
+    const t = t0 + acc*beat; const d = e.q*beat;
+    const f = e.freqOverride ?? (e.note? noteToFreq(/\d$/.test(e.note)? e.note : e.note+"4") : null);
+    if(f){ scheduleTone(t, d, f, 0.18, "sine"); }
+    acc += e.q;
+  }
+  const totalQ = tenorEv.reduce((s,e)=>s+e.q,0);
+  setTimeout(()=>{ playing=false; }, Math.ceil((totalQ*beat+0.2)*1000));
+}
+
+// Simple SVG renderer (two staves) reusing tenor/motetus events
+function renderScoreSVG(tenorEv, motEv){
+  const pxPerQ=20, staffGap=10, left=40, top=20;
+  const totalQ = tenorEv.reduce((s,e)=>s+e.q,0);
+  const width = Math.ceil(totalQ*pxPerQ)+80; const height = top + staffGap*10 + 60;
+  function yFor(noteName, treble=true){
+    const base = treble ? {name:"B4", y:top+staffGap*2} : {name:"D3", y:top+staffGap*8};
+    const f = noteToFreq(/\d$/.test(noteName)? noteName : (noteName + (treble? "4":"3")));
+    if(!f) return top;
+    const midi = Math.round(69 + 12*Math.log2(f/440));
+    const baseMidi = Math.round(69 + 12*Math.log2(noteToFreq(base.name)/440));
+    const diff = midi - baseMidi;
+    return base.y - diff*(staffGap/2);
+  }
+  function drawStaff(yBase, clef){
+    let s = "";
+    for(let i=0;i<5;i++){ const y=yBase+i*staffGap; s += `<line x1="10" y1="${y}" x2="${width-10}" y2="${y}" stroke="#4b5563" stroke-width="1"/>`; }
+    const clefText = clef==="G"?"𝄞":"𝄢";
+    s += `<text x="14" y="${yBase+staffGap*3}" font-size="22" fill="#9ca3af">${clefText}</text>`;
+    return s;
+  }
+  function drawNotes(ev, treble){
+    let s=""; let x=left;
+    for(const e of ev){
+      const w = e.q*pxPerQ;
+      if(e.note){ const n = /\d$/.test(e.note)? e.note : (e.note + (treble? "4":"3"));
+        const y = yFor(n, treble);
+        s += `<circle cx="${x+w*0.6}" cy="${y}" r="4.5" fill="white" stroke="#e5e7eb"/>`;
+      }else{
+        s += `<rect x="${x+w*0.4}" y="${treble? top+staffGap*1.2 : top+staffGap*7.2}" width="${w*0.3}" height="2" fill="#9ca3af" />`;
+      }
+      x += w;
+    }
+    return s;
+  }
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+    ${drawStaff(top, "G")}
+    ${drawStaff(top+staffGap*6, "F")}
+    ${drawNotes(motEv, true)}
+    ${drawNotes(tenorEv, false)}
+  </svg>`;
+  return svg;
+}
+
+// Minimal MusicXML export
+function toMusicXML(tenorEv, motEv){
+  const divisions = 8; // quarter=8 divisions so 8th=4, 16th=2, half=16
+  function durQ(q){ return Math.round(q*divisions); }
+  function typeFromQ(q){ if(q===2) return "half"; if(q===1) return "quarter"; if(q===0.5) return "eighth"; return "16th"; }
+  function midiToStepAlterOct(midi){
+    const names = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+    let step = names[midi%12], octave = Math.floor(midi/12) - 1, alter=0;
+    if(step.includes("#")){ alter=1; step=step[0]; }
+    return {step, alter, octave};
+  }
+  function noteXML(noteName, q, isRest, freqOverride){
+    if(isRest){ return `<note><rest/><duration>${durQ(q)}</duration><type>${typeFromQ(q)}</type></note>`; }
+    let midi;
+    if(freqOverride){ midi = Math.round(69 + 12*Math.log2(freqOverride/440)); }
+    else{
+      const f = noteToFreq(/\d$/.test(noteName)? noteName : noteName+"4");
+      if(!f) return `<note><rest/><duration>${durQ(q)}</duration><type>${typeFromQ(q)}</type></note>`;
+      midi = Math.round(69 + 12*Math.log2(f/440));
+    }
+    const {step, alter, octave} = midiToStepAlterOct(midi);
+    return `<note><pitch><step>${step}</step>${alter?`<alter>${alter}</alter>`:""}<octave>${octave}</octave></pitch><duration>${durQ(q)}</duration><type>${typeFromQ(q)}</type></note>`;
+  }
+  const attrTreble = `<attributes><divisions>${divisions}</divisions><time><beats>4</beats><beat-type>4</beat-type></time><clef><sign>G</sign><line>2</line></clef></attributes>`;
+  const attrBass = `<attributes><divisions>${divisions}</divisions><time><beats>4</beats><beat-type>4</beat-type></time><clef><sign>F</sign><line>4</line></clef></attributes>`;
+  let m1 = `<measure number="1">${attrTreble}`;
+  for(const e of motEv){ m1 += noteXML(e.note, e.q, !e.note && !e.freqOverride, e.freqOverride||null); }
+  m1 += `</measure>`;
+  let m2 = `<measure number="1">${attrBass}`;
+  for(const e of tenorEv){ const n = e.note ? (/\d$/.test(e.note)? e.note : e.note+"3") : null; m2 += noteXML(n, e.q, !e.note, null); }
+  m2 += `</measure>`;
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+<score-partwise version="3.1">
+  <part-list>
+    <score-part id="P1"><part-name>Motetus</part-name></score-part>
+    <score-part id="P2"><part-name>Tenor</part-name></score-part>
+  </part-list>
+  <part id="P1">${m1}</part>
+  <part id="P2">${m2}</part>
+</score-partwise>`;
+  return xml;
+}
+
+// UI wiring
+function refreshSelectors(){
+  const taleas = [
+    {id:"A", text: document.getElementById('taleaA').value},
+    {id:"B", text: document.getElementById('taleaB').value},
+    {id:"C", text: document.getElementById('taleaC').value},
+  ];
+  const colors = [
+    {id:"1", text: document.getElementById('color1').value},
+    {id:"2", text: document.getElementById('color2').value},
+    {id:"3", text: document.getElementById('color3').value},
+  ];
+  const tIDs = ["seg1Talea","seg2Talea","seg3Talea"];
+  const cIDs = ["seg1Color","seg2Color","seg3Color"];
+  for(const id of tIDs){
+    const sel = document.getElementById(id);
+    sel.innerHTML = taleas.map(t=>`<option value="${t.id}">Talea ${t.id}</option>`).join('');
+  }
+  for(const id of cIDs){
+    const sel = document.getElementById(id);
+    sel.innerHTML = colors.map(c=>`<option value="${c.id}">Color ${c.id}</option>`).join('');
+  }
+}
+['taleaA','taleaB','taleaC','color1','color2','color3'].forEach(id=>{
+  document.addEventListener('input', (e)=>{
+    if(e.target && e.target.id===id){ refreshSelectors(); }
+  }, {passive:true});
+});
+
+window.addEventListener('DOMContentLoaded', refreshSelectors);
+
+// Mode helper
+document.getElementById('makeColor').onclick = async () => {
+  const mode = document.getElementById('mode').value;
+  const degrees = parseCSV(document.getElementById('scaleDegrees').value).map(x=>parseInt(x,10)).filter(Number.isFinite);
+  const root = mode.split(' ')[0].toUpperCase();
+  const scaleMap = {
+    
+    'D': ['D','E','F','G','A','B','C'],
+    'E': ['E','F','G','A','B','C','D'],
+    'F': ['F','G','A','A#','C','D','E'],
+    'G': ['G','A','B','C','D','E','F'],
+    'A': ['A','B','C','D','E','F','G'],
+    'B': ['B','C','D','E','F','G','A'],
+  };
+  const octave = 4;
+  const scale = scaleMap[root] || scaleMap['D'];
+  const out = degrees.map(d=> scale[(d-1+7*10)%7] + octave).join(',');
+  try{
+    await navigator.clipboard.writeText(out);
+    alert('생성한 Color를 클립보드에 복사했습니다. 원하는 Color 칸에 붙여넣으세요.\\nCopied to clipboard.');
+  }catch(e){
+    alert('생성: ' + out);
+  }
+};
+
+// Generate, Play, Render, Export
+function downloadFile(content, filename, mime){
+  const blob = new Blob([content], {type:mime || 'application/octet-stream'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=filename; a.click();
+  setTimeout(()=> URL.revokeObjectURL(url), 1000);
+}
+
+document.getElementById('play').onclick = () => {
+  if(playing){ return; }
+  const tempo = parseInt(document.getElementById('tempo').value,10) || 100;
+  const vol = (parseInt(document.getElementById('volume').value,10) || 70)/100;
+  const cycles = Math.max(1, Math.min(12, parseInt(document.getElementById('cycles').value,10) || 1));
+  const tMap = {
+    'A': parseTalea(document.getElementById('taleaA').value),
+    'B': parseTalea(document.getElementById('taleaB').value),
+    'C': parseTalea(document.getElementById('taleaC').value),
+  };
+  const cMap = {
+    '1': document.getElementById('color1').value,
+    '2': document.getElementById('color2').value,
+    '3': document.getElementById('color3').value,
+  };
+  const segs = [
+    { talea: tMap[document.getElementById('seg1Talea').value], color: cMap[document.getElementById('seg1Color').value] },
+    { talea: tMap[document.getElementById('seg2Talea').value], color: cMap[document.getElementById('seg2Color').value] },
+    { talea: tMap[document.getElementById('seg3Talea').value], color: cMap[document.getElementById('seg3Color').value] },
+  ];
+  if(segs.some(s=>!s.talea || s.talea.length===0)){ alert('Talea를 확인하세요.'); return; }
+  const tenorEv = buildTenorSegments(segs, cycles);
+  const motShift = Math.max(0, Math.min(12, parseInt(document.getElementById('motShift').value,10) || 0));
+  const motInterval = parseInt(document.getElementById('motInterval').value,10);
+  const avoidPar = document.getElementById('avoidParallels').checked;
+  const cadence = document.getElementById('cadence').checked;
+  const motEv = buildMotetusFromTenor(tenorEv, motShift, motInterval, avoidPar, cadence);
+
+  window.__lastPiece = {tenorEv, motEv};
+  document.getElementById('downloadSVG').disabled = true;
+  document.getElementById('downloadXML').disabled = false;
+  playPiece(tenorEv, motEv, tempo, vol);
+};
+
+document.getElementById('stop').onclick = () => {
+  for(const fn of stopFns){ try{ fn(); }catch(e){} }
+  playing=false;
+};
+
+document.getElementById('renderScore').onclick = () => {
+  if(!window.__lastPiece){ alert('먼저 재생하여 곡을 생성하세요.'); return; }
+  const {tenorEv, motEv} = window.__lastPiece;
+  const svg = renderScoreSVG(tenorEv, motEv);
+  document.getElementById('score').innerHTML = svg;
+  window.__lastSVG = svg;
+  document.getElementById('downloadSVG').disabled = false;
+  document.getElementById('downloadXML').disabled = false;
+};
+
+document.getElementById('downloadSVG').onclick = () => {
+  if(window.__lastSVG){ downloadFile(window.__lastSVG, 'motet.svg', 'image/svg+xml'); }
+};
+
+document.getElementById('downloadXML').onclick = () => {
+  if(!window.__lastPiece){ alert('먼저 재생하여 곡을 생성하세요.'); return; }
+  const {tenorEv, motEv} = window.__lastPiece;
+  const xml = toMusicXML(tenorEv, motEv);
+  downloadFile(xml, 'motet.musicxml', 'application/vnd.recordare.musicxml+xml');
+};
+</script>
+</body>
+</html>
