@@ -108,22 +108,16 @@ header {
     display: inline-block;
     padding: 12px 30px;
     border-radius: 5px;
-    text-decoration: none;
     font-weight: 500;
     transition: var(--transition);
-    color: var(--primary-color);
-    background: transparent;
-    border: 2px solid transparent;
-}
-
-.btn-primary {
+    text-decoration: none;
     background: var(--white);
     color: var(--primary-color);
     border: 2px solid var(--primary-color);
 }
 
-.btn-primary:hover,
-.btn-primary:focus {
+.btn:hover,
+.btn:focus {
     transform: translateY(-2px);
     box-shadow: 0 5px 20px rgba(0,0,0,0.2);
     background: var(--primary-color);
