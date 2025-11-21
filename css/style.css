@@ -106,7 +106,7 @@ header {
 
 .btn {
     display: inline-block;
-    padding: 6px 15px;
+    padding: 12px 30px;
     border-radius: 5px;
     text-decoration: none;
     font-weight: 500;
@@ -116,11 +116,15 @@ header {
 .btn-primary {
     background: var(--white);
     color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    background: var(--primary-color);
+    color: var(--white);
 }
 
 /* 섹션 공통 */
